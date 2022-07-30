@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const TabBarDemo());
+  runApp(MaterialApp(
+    initialRoute: '/',
+    routes: {
+      '/': (BuildContext context) => const MainScreen(),
+      '/settings': (BuildContext context) => const SettingsScreen()
+    },
+    debugShowCheckedModeBanner: false,
+    theme: ThemeData(
+      primarySwatch: Colors.teal,
+    ),
+  ));
 }
 
-class TabBarDemo extends StatelessWidget {
-  const TabBarDemo({super.key});
+class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +40,14 @@ class TabBarDemo extends StatelessWidget {
               ],
             ),
             title: const Text('My apps'),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  Navigator.pushNamed(context, '/second');
+                },
+              )
+            ],
           ),
           body: const TabBarView(
             children: [
@@ -40,6 +58,17 @@ class TabBarDemo extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Settings')),
     );
   }
 }
