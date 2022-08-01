@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    theme: ThemeData(
+      colorScheme: ColorScheme.fromSwatch(
+        primarySwatch: Colors.deepPurple,
+      ),
+      textTheme:
+          const TextTheme(bodyText2: TextStyle(color: Colors.deepPurple)),
+      scaffoldBackgroundColor: Colors.deepPurple[50],
+    ),
+    //TODO:оформить темную тему
+    // darkTheme: ThemeData.dark(),
     initialRoute: '/',
     routes: {
       '/': (BuildContext context) => const MainScreen(),
       '/settings': (BuildContext context) => const SettingsScreen()
     },
-    debugShowCheckedModeBanner: false,
-    theme: ThemeData(
-      primarySwatch: Colors.teal,
-    ),
   ));
 }
 
@@ -19,12 +27,8 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-      ),
-      home: DefaultTabController(
+    return Scaffold(
+      body: DefaultTabController(
         length: 3,
         child: Scaffold(
           appBar: AppBar(
@@ -92,41 +96,29 @@ class _InputWidgetState extends State<InputWidget> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Row(
-            children: [
-              Expanded(flex: 1, child: const Text('Длина циклов')),
-              Expanded(
-                flex: 1,
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter number of days';
-                    }
-                    return null;
-                  },
+            children: const [
+              Padding(
+                padding:
+                    EdgeInsets.only(top: 10, bottom: 0, left: 20, right: 20),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Text('Длина циклов', textDirection: TextDirection.ltr),
                 ),
               ),
+              MyStatefulWidget(),
             ],
           ),
           Row(
-            children: [
-              Expanded(flex: 1, child: const Text('Длина месячных')),
-              Expanded(
-                flex: 1,
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter number of days';
-                    }
-                    return null;
-                  },
+            children: const [
+              Padding(
+                padding:
+                    EdgeInsets.only(top: 10, bottom: 0, left: 20, right: 20),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Text('Длина месячных', textDirection: TextDirection.ltr),
                 ),
               ),
+              //TODO: тут будет другой виджет - как наверху, только с меньшим диапазоном чисел
             ],
           ),
           Row(
@@ -151,73 +143,69 @@ class _InputWidgetState extends State<InputWidget> {
         ],
       ),
     );
-    // child: Container(
-    //   padding: const EdgeInsets.all(20),
-    //   child: Column(
-    //     crossAxisAlignment: CrossAxisAlignment.start,
-    //     children: [
-    //       Row(
-    //         children: [
-    //           const Text.rich(
-    //             TextSpan(
-    //               text: 'Hello', // default text style
-    //               children: <TextSpan>[
-    //                 TextSpan(
-    //                     text: ' beautiful ',
-    //                     style: TextStyle(fontStyle: FontStyle.italic)),
-    //                 TextSpan(
-    //                     text: 'world',
-    //                     style: TextStyle(fontWeight: FontWeight.bold)),
-    //               ],
-    //             ),
-    //           ),
-    //           TextFormField(
-    //             decoration: const InputDecoration(
-    //                border: OutlineInputBorder(),
-    //              ),
-    //             validator: (value) {
-    //               if (value == null || value.isEmpty) {
-    //                 return 'Please enter number of days';
-    //               }
-    //               return null;
-    //             },
-    //           ),
-    //         ],
-    //       ),
-    //       Row(
-    //         children: [
-    //           TextFormField(
-    //             decoration: const InputDecoration(),
-    //             validator: (value) {
-    //               if (value == null || value.isEmpty) {
-    //                 return 'Please enter number of days';
-    //               }
-    //               return null;
-    //             },
-    //           ),
-    //         ],
-    //       ),
-    //       Row(
-    //         children: [
-    //           Padding(
-    //             padding: const EdgeInsets.symmetric(
-    //               vertical: 16.0,
-    //             ),
-    //             child: ElevatedButton(
-    //               onPressed: () {
-    //                 // Validate will return true if the form is valid, or false if
-    //                 // the form is invalid.
-    //                 if (_formKey.currentState!.validate()) {
-    //                   // Process data.
-    //                 }
-    //               },
-    //               child: const Text('Submit'),
-    //             ),
-    //           ),
-    //         ],
-    //       )
-    //     ],
-    //   ),
-    // ),
+  }
+}
+
+class MyStatefulWidget extends StatefulWidget {
+  const MyStatefulWidget({Key? key}) : super(key: key);
+
+  @override
+  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
+}
+
+class _MyStatefulWidgetState extends State<MyStatefulWidget> {
+  String dropdownValue = '25';
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: dropdownValue,
+      // icon: const Icon(Icons.arrow_downward),
+      elevation: 16,
+      style: const TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      onChanged: (String? newValue) {
+        setState(() {
+          dropdownValue = newValue!;
+        });
+      },
+      items: <String>[
+        '1 ',
+        '2 ',
+        '3 ',
+        '4 ',
+        '5 ',
+        '6 ',
+        '7 ',
+        '8 ',
+        '9 ',
+        '10',
+        '11',
+        '12',
+        '13',
+        '14',
+        '15',
+        '16',
+        '17',
+        '18',
+        '19',
+        '20',
+        '21',
+        '22',
+        '23',
+        '24',
+        '25',
+        '26',
+        '27'
+      ].map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
   }
 }
