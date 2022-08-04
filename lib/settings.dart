@@ -18,8 +18,8 @@ class _InputWidgetState extends State<InputWidget> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Row(
-            children: const [
-              Padding(
+            children: [
+              const Padding(
                 padding:
                     EdgeInsets.only(top: 10, bottom: 0, left: 20, right: 20),
                 child: Align(
@@ -27,12 +27,12 @@ class _InputWidgetState extends State<InputWidget> {
                   child: Text('Длина циклов', textDirection: TextDirection.ltr),
                 ),
               ),
-              LongStatefulWidget(),
+              LongStatefulWidget(dropdownValue: '23'),
             ],
           ),
           Row(
-            children: const [
-              Padding(
+            children: [
+              const Padding(
                 padding:
                     EdgeInsets.only(top: 10, bottom: 0, left: 20, right: 20),
                 child: Align(
@@ -41,7 +41,7 @@ class _InputWidgetState extends State<InputWidget> {
                       Text('Длина месячных', textDirection: TextDirection.ltr),
                 ),
               ),
-              ShortStatefulWidget(),
+              ShortStatefulWidget(dropdownValue: '5 '),
             ],
           ),
           Row(
@@ -50,7 +50,9 @@ class _InputWidgetState extends State<InputWidget> {
                 padding: const EdgeInsets.only(
                     top: 10, bottom: 0, left: 20, right: 20),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    print("pressed ");
+                  },
                   child: const Text('Confirm'),
                 ),
               ),
@@ -63,20 +65,24 @@ class _InputWidgetState extends State<InputWidget> {
 }
 
 class LongStatefulWidget extends StatefulWidget {
-  const LongStatefulWidget({Key? key}) : super(key: key);
+  String dropdownValue = 'Choose';
+
+  LongStatefulWidget({Key? key, required this.dropdownValue}) : super(key: key);
 
   @override
-  State<LongStatefulWidget> createState() => _LongStatefulWidgetState();
+  State<LongStatefulWidget> createState() =>
+      _LongStatefulWidgetState(this.dropdownValue);
 }
 
 class _LongStatefulWidgetState extends State<LongStatefulWidget> {
   String dropdownValue = 'Choose';
 
+  _LongStatefulWidgetState(this.dropdownValue);
+
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: dropdownValue,
-      // icon: const Icon(Icons.arrow_downward),
       elevation: 16,
       style: const TextStyle(color: Colors.deepPurple),
       underline: Container(
@@ -86,6 +92,7 @@ class _LongStatefulWidgetState extends State<LongStatefulWidget> {
       onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue!;
+
         });
       },
       items: <String>[
@@ -130,20 +137,25 @@ class _LongStatefulWidgetState extends State<LongStatefulWidget> {
 }
 
 class ShortStatefulWidget extends StatefulWidget {
-  const ShortStatefulWidget({Key? key}) : super(key: key);
+  String dropdownValue = 'Choose';
+
+  ShortStatefulWidget({Key? key, required this.dropdownValue})
+      : super(key: key);
 
   @override
-  State<ShortStatefulWidget> createState() => _ShortStatefulWidgetState();
+  State<ShortStatefulWidget> createState() =>
+      _ShortStatefulWidgetState(this.dropdownValue);
 }
 
 class _ShortStatefulWidgetState extends State<ShortStatefulWidget> {
   String dropdownValue = 'Choose';
 
+  _ShortStatefulWidgetState(this.dropdownValue);
+
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: dropdownValue,
-      // icon: const Icon(Icons.arrow_downward),
       elevation: 16,
       style: const TextStyle(color: Colors.deepPurple),
       underline: Container(
