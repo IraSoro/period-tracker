@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'settings.dart';
+import 'tabHome.dart';
+import 'tabCalendar.dart';
+import 'tabNotes.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -12,8 +15,6 @@ void main() {
           const TextTheme(bodyText2: TextStyle(color: Colors.deepPurple)),
       scaffoldBackgroundColor: Colors.deepPurple[50],
     ),
-    //TODO:оформить темную тему
-    // darkTheme: ThemeData.dark(),
     initialRoute: '/',
     routes: {
       '/': (BuildContext context) => const MainScreen(),
@@ -55,9 +56,9 @@ class MainScreen extends StatelessWidget {
           ),
           body: const TabBarView(
             children: [
-              Icon(Icons.home),
-              Icon(Icons.calendar_month),
-              Icon(Icons.note),
+              TabHomeWidget(),
+              TabCalendarWidget(),
+              TabNotesWidget(),
             ],
           ),
         ),

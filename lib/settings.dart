@@ -52,6 +52,7 @@ class _InputWidgetState extends State<InputWidget> {
                 child: ElevatedButton(
                   onPressed: () {
                     print("pressed ");
+                    Navigator.pop(context);
                   },
                   child: const Text('Confirm'),
                 ),
@@ -92,7 +93,6 @@ class _LongStatefulWidgetState extends State<LongStatefulWidget> {
       onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue!;
-
         });
       },
       items: <String>[
