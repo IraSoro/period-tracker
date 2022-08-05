@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:date_field/date_field.dart';
 
 class InputWidget extends StatefulWidget {
   const InputWidget({Key? key}) : super(key: key);
@@ -27,7 +28,7 @@ class _InputWidgetState extends State<InputWidget> {
                   child: Text('Длина циклов', textDirection: TextDirection.ltr),
                 ),
               ),
-              LongStatefulWidget(dropdownValue: '23'),
+              LongDropdownWidget(dropdownValue: '23'),
             ],
           ),
           Row(
@@ -41,7 +42,17 @@ class _InputWidgetState extends State<InputWidget> {
                       Text('Длина месячных', textDirection: TextDirection.ltr),
                 ),
               ),
-              ShortStatefulWidget(dropdownValue: '5 '),
+              ShortDropdownWidget(dropdownValue: '5 '),
+            ],
+          ),
+          Row(
+            children: [
+              Expanded(
+                  child: Padding(
+                padding: EdgeInsets.only(
+                    top: 10.0, bottom: 0.0, left: 20.0, right: 20.0),
+                child: DateTimeWidget(selectedDate: DateTime(2022, 12, 18)),
+              ))
             ],
           ),
           Row(
@@ -65,20 +76,20 @@ class _InputWidgetState extends State<InputWidget> {
   }
 }
 
-class LongStatefulWidget extends StatefulWidget {
+class LongDropdownWidget extends StatefulWidget {
   String dropdownValue = 'Choose';
 
-  LongStatefulWidget({Key? key, required this.dropdownValue}) : super(key: key);
+  LongDropdownWidget({Key? key, required this.dropdownValue}) : super(key: key);
 
   @override
-  State<LongStatefulWidget> createState() =>
-      _LongStatefulWidgetState(this.dropdownValue);
+  State<LongDropdownWidget> createState() =>
+      _LongDropdownWidgetState(this.dropdownValue);
 }
 
-class _LongStatefulWidgetState extends State<LongStatefulWidget> {
+class _LongDropdownWidgetState extends State<LongDropdownWidget> {
   String dropdownValue = 'Choose';
 
-  _LongStatefulWidgetState(this.dropdownValue);
+  _LongDropdownWidgetState(this.dropdownValue);
 
   @override
   Widget build(BuildContext context) {
@@ -136,21 +147,21 @@ class _LongStatefulWidgetState extends State<LongStatefulWidget> {
   }
 }
 
-class ShortStatefulWidget extends StatefulWidget {
+class ShortDropdownWidget extends StatefulWidget {
   String dropdownValue = 'Choose';
 
-  ShortStatefulWidget({Key? key, required this.dropdownValue})
+  ShortDropdownWidget({Key? key, required this.dropdownValue})
       : super(key: key);
 
   @override
-  State<ShortStatefulWidget> createState() =>
-      _ShortStatefulWidgetState(this.dropdownValue);
+  State<ShortDropdownWidget> createState() =>
+      _ShortDropdownWidgetState(this.dropdownValue);
 }
 
-class _ShortStatefulWidgetState extends State<ShortStatefulWidget> {
+class _ShortDropdownWidgetState extends State<ShortDropdownWidget> {
   String dropdownValue = 'Choose';
 
-  _ShortStatefulWidgetState(this.dropdownValue);
+  _ShortDropdownWidgetState(this.dropdownValue);
 
   @override
   Widget build(BuildContext context) {
@@ -184,6 +195,42 @@ class _ShortStatefulWidgetState extends State<ShortStatefulWidget> {
           child: Text(value),
         );
       }).toList(),
+    );
+  }
+}
+
+class DateTimeWidget extends StatefulWidget {
+  DateTime? selectedDate = DateTime(2020, 3, 8);
+
+  DateTimeWidget({Key? key, required this.selectedDate}) : super(key: key);
+
+  @override
+  State<DateTimeWidget> createState() =>
+      _DateTimeWidgetState(this.selectedDate);
+}
+
+class _DateTimeWidgetState extends State<DateTimeWidget> {
+  DateTime? selectedDate = DateTime(2020, 3, 8);
+
+  _DateTimeWidgetState(this.selectedDate);
+
+  @override
+  Widget build(BuildContext context) {
+    return DateTimeFormField(
+      initialValue: selectedDate,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(),
+        suffixIcon: Icon(Icons.event_note),
+        labelText: 'Начало последней менструации',
+      ),
+      mode: DateTimeFieldPickerMode.date,
+      autovalidateMode: AutovalidateMode.always,
+      onDateSelected: (DateTime value) {
+        setState(() {
+          selectedDate = value;
+          print("value  =  " + value.toString());
+        });
+      },
     );
   }
 }
