@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
 
+import 'tempFile.dart';
+
 class InputWidget extends StatefulWidget {
   const InputWidget({Key? key}) : super(key: key);
 
@@ -28,7 +30,7 @@ class _InputWidgetState extends State<InputWidget> {
                   child: Text('Длина циклов', textDirection: TextDirection.ltr),
                 ),
               ),
-              LongDropdownWidget(dropdownValue: '23'),
+              LongDropdownWidget(dropdownValue: tempLoc.long),
             ],
           ),
           Row(
@@ -42,7 +44,7 @@ class _InputWidgetState extends State<InputWidget> {
                       Text('Длина месячных', textDirection: TextDirection.ltr),
                 ),
               ),
-              ShortDropdownWidget(dropdownValue: '5 '),
+              ShortDropdownWidget(dropdownValue: tempLoc.short),
             ],
           ),
           Row(
@@ -51,23 +53,8 @@ class _InputWidgetState extends State<InputWidget> {
                   child: Padding(
                 padding: EdgeInsets.only(
                     top: 10.0, bottom: 0.0, left: 20.0, right: 20.0),
-                child: DateTimeWidget(selectedDate: DateTime(2022, 12, 18)),
+                child: DateTimeWidget(selectedDate: tempLoc.date),
               ))
-            ],
-          ),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 10, bottom: 0, left: 20, right: 20),
-                child: ElevatedButton(
-                  onPressed: () {
-                    print("pressed ");
-                    Navigator.pop(context);
-                  },
-                  child: const Text('Confirm'),
-                ),
-              ),
             ],
           ),
         ],
@@ -104,6 +91,7 @@ class _LongDropdownWidgetState extends State<LongDropdownWidget> {
       onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue!;
+          tempLoc.long = dropdownValue;
         });
       },
       items: <String>[
@@ -176,6 +164,7 @@ class _ShortDropdownWidgetState extends State<ShortDropdownWidget> {
       onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue!;
+          tempLoc.short = dropdownValue;
         });
       },
       items: <String>[
@@ -225,10 +214,10 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
       ),
       mode: DateTimeFieldPickerMode.date,
       autovalidateMode: AutovalidateMode.always,
-      onDateSelected: (DateTime value) {
+      onDateSelected: (DateTime newDate) {
         setState(() {
-          selectedDate = value;
-          print("value  =  " + value.toString());
+          selectedDate = newDate;
+          tempLoc.date = selectedDate;
         });
       },
     );

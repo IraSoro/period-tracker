@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application/tempFile.dart';
+
+import 'tempFile.dart';
 
 class TabHomeWidget extends StatefulWidget {
   const TabHomeWidget({Key? key}) : super(key: key);
@@ -18,8 +21,10 @@ class _TabHomeWidgetState extends State<TabHomeWidget> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Row(
-            children: const [
-              Text('Home'),
+            children: [
+              Expanded(
+              child: Text(tempLoc.getTotalInf()),
+              )
             ],
           ),
         ],
