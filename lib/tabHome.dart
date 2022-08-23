@@ -21,40 +21,63 @@ class _TabHomeWidgetState extends State<TabHomeWidget> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Container(
-              child: Stack(children: [
-            Opacity(
-                opacity: 0.5,
-                child: ClipPath(
-                    clipper: WaveClipper(),
-                    child: Container(
-                      color: Colors.deepPurple.shade200,
-                      width: MediaQuery.of(context).size.width,
-                      height: 200,
-                    ))),
-            ClipPath(
-                clipper: WaveClipper(),
-                child: Container(
-                  color: Colors.deepPurple.shade300,
-                  width: MediaQuery.of(context).size.width,
-                  height: 180,
-                  alignment: Alignment.center,
-                  // child: Text(
-                  //   tempLoc.getTotalInf(),
-                  //   style: TextStyle(
-                  //     fontSize: 18,
-                  //     color: Colors.white,
-                  //   ),
-                  // ),
-                ))
-          ])),
-          const MyStatefulWidget(),
+              child: Stack(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height - 140,
+                color: Colors.deepPurple.shade50,
+              ),
+              Opacity(
+                  opacity: 0.5,
+                  child: ClipPath(
+                      clipper: WaveClipperTop(),
+                      child: Container(
+                        color: Colors.deepPurple.shade200,
+                        width: MediaQuery.of(context).size.width,
+                        height: 160,
+                      ))),
+              ClipPath(
+                  clipper: WaveClipperTop(),
+                  child: Container(
+                    color: Colors.deepPurple.shade300,
+                    width: MediaQuery.of(context).size.width,
+                    height: 140,
+                    alignment: Alignment.center,
+                  )),
+              const Positioned(
+                bottom: 320,
+                right: 20,
+                child: const MyStatefulWidget(),
+              ),
+              const Positioned(
+                bottom: 100,
+                right: 120,
+                child: const MyStatefulWidget(),
+              ),
+              ClipPath(
+                  clipper: WaveClipperBottom(),
+                  child: Container(
+                    color: Colors.deepPurple.shade200,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height - 160,
+                  )),
+              ClipPath(
+                  clipper: WaveClipperBottom(),
+                  child: Container(
+                    color: Colors.deepPurple.shade300,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height - 140,
+                  )),
+            ],
+          )),
         ],
       ),
     );
   }
 }
 
-class WaveClipper extends CustomClipper<Path> {
+class WaveClipperTop extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     debugPrint(size.width.toString());
@@ -83,6 +106,36 @@ class WaveClipper extends CustomClipper<Path> {
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
+class WaveClipperBottom extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    debugPrint(size.width.toString());
+    var path = Path();
+    path.moveTo(size.width, size.height - 140);
+
+    var firstStart = Offset(size.width - size.width / 5, size.height - 140);
+    var firstEnd =
+        Offset(size.width - size.width / 2.25, size.height - 140 + 50.0);
+
+    path.quadraticBezierTo(
+        firstStart.dx, firstStart.dy, firstEnd.dx, firstEnd.dy);
+
+    var secondStart = Offset((size.width / 3.24), size.height - 140 + 105);
+    var secondEnd = Offset(0, size.height - 140 + 10);
+
+    path.quadraticBezierTo(
+        secondStart.dx, secondStart.dy, secondEnd.dx, secondEnd.dy);
+    path.lineTo(0, size.height);
+    path.lineTo(size.width, size.height);
+    path.close();
+
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({Key? key}) : super(key: key);
 
@@ -102,17 +155,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         });
       },
       child: Container(
-        child: Align(
-          alignment: Alignment(0.55, 0.0),
+        child: Center(
+          // alignment: Alignment.center,
           child: AnimatedContainer(
             decoration: BoxDecoration(
               color: selected ? Colors.deepPurple : Colors.deepPurple.shade400,
               border: Border.all(
                   width: selected ? 0 : 10, color: Colors.deepPurple.shade200),
-              borderRadius: BorderRadius.circular(100),
+              borderRadius: BorderRadius.circular(120),
             ),
-            width: selected ? 180.0 : 200.0,
-            height: selected ? 180.0 : 200.0,
+            width: 220.0,
+            height: 220.0,
             // color: selected ? Colors.red : Colors.blue,
             alignment:
                 selected ? Alignment.center : AlignmentDirectional.topCenter,
