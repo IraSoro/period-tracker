@@ -74,17 +74,8 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // automaticallyImplyLeading: false,
         title: const Text('Settings'),
-        // actions: [
-        //       IconButton(
-        //         icon: const Icon(Icons.check),
-        //         onPressed: () {
-        //           Navigator.pop(context);
-        //         },
-        //       )
-        //     ],
-              ),
+      ),
       body: const InputWidget(),
     );
   }
