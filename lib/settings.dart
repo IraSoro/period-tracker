@@ -30,7 +30,7 @@ class _InputWidgetState extends State<InputWidget> {
                   child: Text('Длина циклов', textDirection: TextDirection.ltr),
                 ),
               ),
-              LongDropdownWidget(dropdownValue: tempLoc.long),
+              LongDropdownWidget(dropdownValue: tempLoc.cycleLen),
             ],
           ),
           Row(
@@ -44,7 +44,7 @@ class _InputWidgetState extends State<InputWidget> {
                       Text('Длина месячных', textDirection: TextDirection.ltr),
                 ),
               ),
-              ShortDropdownWidget(dropdownValue: tempLoc.short),
+              ShortDropdownWidget(dropdownValue: tempLoc.periodLen),
             ],
           ),
           Row(
@@ -53,7 +53,7 @@ class _InputWidgetState extends State<InputWidget> {
                   child: Padding(
                 padding: EdgeInsets.only(
                     top: 10.0, bottom: 0.0, left: 20.0, right: 20.0),
-                child: DateTimeWidget(selectedDate: tempLoc.date),
+                child: DateTimeWidget(selectedDate: tempLoc.dateLastStart),
               ))
             ],
           ),
@@ -91,7 +91,7 @@ class _LongDropdownWidgetState extends State<LongDropdownWidget> {
       onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue!;
-          tempLoc.long = dropdownValue;
+          tempLoc.cycleLen = dropdownValue;
         });
       },
       items: <String>[
@@ -164,7 +164,7 @@ class _ShortDropdownWidgetState extends State<ShortDropdownWidget> {
       onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue!;
-          tempLoc.short = dropdownValue;
+          tempLoc.periodLen = dropdownValue;
         });
       },
       items: <String>[
@@ -189,7 +189,7 @@ class _ShortDropdownWidgetState extends State<ShortDropdownWidget> {
 }
 
 class DateTimeWidget extends StatefulWidget {
-  DateTime? selectedDate = DateTime(2020, 3, 8);
+  DateTime selectedDate = DateTime(2020, 3, 8);
 
   DateTimeWidget({Key? key, required this.selectedDate}) : super(key: key);
 
@@ -199,7 +199,7 @@ class DateTimeWidget extends StatefulWidget {
 }
 
 class _DateTimeWidgetState extends State<DateTimeWidget> {
-  DateTime? selectedDate = DateTime(2020, 3, 8);
+  DateTime selectedDate = DateTime(2020, 3, 8);
 
   _DateTimeWidgetState(this.selectedDate);
 
@@ -217,7 +217,7 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
       onDateSelected: (DateTime newDate) {
         setState(() {
           selectedDate = newDate;
-          tempLoc.date = selectedDate;
+          tempLoc.dateLastStart = selectedDate;
         });
       },
     );

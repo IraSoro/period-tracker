@@ -167,17 +167,24 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             width: 220.0,
             height: 220.0,
             // color: selected ? Colors.red : Colors.blue,
-            alignment:
-                selected ? Alignment.center : AlignmentDirectional.topCenter,
+            alignment: Alignment.center,
             duration: const Duration(seconds: 1),
             curve: Curves.easeInOutBack,
-            child: Text(
-              tempLoc.getTotalInf(),
-              style: const TextStyle(
-                fontSize: 10,
-                color: Colors.white,
-              ),
-            ),
+            child: selected
+                ? Text(
+                    tempLoc.getMenstruation(),
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: Colors.white,
+                    ),
+                  )
+                : Text(
+                    tempLoc.getOvulation(),
+                    style: const TextStyle(
+                      fontSize: 10,
+                      color: Colors.white,
+                    ),
+                  ),
           ),
         ),
       ),
