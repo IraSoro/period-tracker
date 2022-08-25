@@ -259,26 +259,27 @@ class _InfPeriodWidgetState extends State<InfPeriodWidget> {
     if (infPeriod.item2 < 0) {
       return Container(
         alignment: Alignment.center,
+        padding: EdgeInsets.only(top: 50.0),
         child: Column(
           children: [
             const Text(
               'Period is',
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 20,
                 color: Colors.white,
               ),
             ),
             Text(
               infPeriod.item2.abs().toString(),
               style: const TextStyle(
-                fontSize: 15,
-                color: Colors.deepOrange,
+                fontSize: 40,
+                color: Color.fromRGBO(160, 196, 196, 1),
               ),
             ),
             const Text(
               'days late',
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 20,
                 color: Colors.white,
               ),
             )
@@ -289,32 +290,22 @@ class _InfPeriodWidgetState extends State<InfPeriodWidget> {
     if (infPeriod.item2 > 0) {
       return Container(
         alignment: Alignment.center,
+        padding: EdgeInsets.only(top: 55.0),
         child: Column(
           children: [
             const Text(
               'Period in',
               style: TextStyle(
-                fontSize: 10,
+                fontSize: 20,
                 color: Colors.white,
               ),
             ),
-            Row(
-              children: [
-                Text(
-                  infPeriod.item2.toString(),
-                  style: const TextStyle(
-                    fontSize: 15,
-                    color: Colors.deepOrange,
-                  ),
-                ),
-                const Text(
-                  'Days',
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: Colors.white,
-                  ),
-                )
-              ],
+            Text(
+              '${infPeriod.item2.toString()} Days',
+              style: const TextStyle(
+                fontSize: 40,
+                color: Colors.deepOrange,
+              ),
             ),
           ],
         ),
