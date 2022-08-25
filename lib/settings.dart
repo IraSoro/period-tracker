@@ -30,7 +30,7 @@ class _InputWidgetState extends State<InputWidget> {
                   child: Text('Длина циклов', textDirection: TextDirection.ltr),
                 ),
               ),
-              LongDropdownWidget(dropdownValue: tempLoc.cycleLen),
+              LongDropdownWidget(dropdownValue: tempLoc.MidCycleLen),
             ],
           ),
           Row(
@@ -44,7 +44,7 @@ class _InputWidgetState extends State<InputWidget> {
                       Text('Длина месячных', textDirection: TextDirection.ltr),
                 ),
               ),
-              ShortDropdownWidget(dropdownValue: tempLoc.periodLen),
+              ShortDropdownWidget(dropdownValue: tempLoc.MidPeriodLen),
             ],
           ),
           Row(
@@ -91,7 +91,7 @@ class _LongDropdownWidgetState extends State<LongDropdownWidget> {
       onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue!;
-          tempLoc.cycleLen = dropdownValue;
+          tempLoc.MidCycleLen = dropdownValue;
         });
       },
       items: <String>[
@@ -164,7 +164,7 @@ class _ShortDropdownWidgetState extends State<ShortDropdownWidget> {
       onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue!;
-          tempLoc.periodLen = dropdownValue;
+          tempLoc.MidPeriodLen = dropdownValue;
         });
       },
       items: <String>[
