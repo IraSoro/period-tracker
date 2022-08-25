@@ -172,21 +172,7 @@ class _ButtonOvulationWidgetState extends State<ButtonOvulationWidget> {
             alignment: Alignment.center,
             duration: const Duration(seconds: 1),
             curve: Curves.easeInOutBack,
-            child: selected
-                ? Text(
-                    tempLoc.getOvulation(),
-                    style: const TextStyle(
-                      fontSize: 10,
-                      color: Colors.white,
-                    ),
-                  )
-                : Text(
-                    tempLoc.getOvulation(),
-                    style: const TextStyle(
-                      fontSize: 10,
-                      color: Colors.white,
-                    ),
-                  ),
+            child: InfOvulationWidget(),
           ),
         ),
       ),
@@ -245,13 +231,12 @@ class InfPeriodWidget extends StatefulWidget {
 class _InfPeriodWidgetState extends State<InfPeriodWidget> {
   Tuple2<bool, int> infPeriod = tempLoc.getMenstruation();
   @override
-  //TODO: add alignment
   Widget build(BuildContext context) {
     if (!infPeriod.item1) {
       return const Text(
         'Enter settings',
         style: TextStyle(
-          fontSize: 10,
+          fontSize: 30,
           color: Colors.white,
         ),
       );
@@ -318,5 +303,68 @@ class _InfPeriodWidgetState extends State<InfPeriodWidget> {
         color: Colors.white,
       ),
     );
+  }
+}
+
+class InfOvulationWidget extends StatefulWidget {
+  const InfOvulationWidget({Key? key}) : super(key: key);
+
+  @override
+  State<InfOvulationWidget> createState() => _InfOvulationWidgetState();
+}
+
+class _InfOvulationWidgetState extends State<InfOvulationWidget> {
+  Tuple2<bool, int> infOvulation = tempLoc.getOvulation();
+  @override
+  Widget build(BuildContext context) {
+    if (!infOvulation.item1) {
+      return const Text(
+        'Enter settings',
+        style: TextStyle(
+          fontSize: 30,
+          color: Colors.amber,
+        ),
+      );
+    }
+    if (infOvulation.item2 > 0) {
+      return Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.only(top: 55.0),
+        child: Column(
+          children: [
+            const Text(
+              'Ovulation in',
+              style: TextStyle(
+                fontSize: 20,
+                color: Colors.white,
+              ),
+            ),
+            Text(
+              '${infOvulation.item2.toString()} Days',
+              style: const TextStyle(
+                fontSize: 40,
+                color: Colors.blueAccent,
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    if (infOvulation.item2 == 0) {
+      return const Text(
+        'Ovulation today',
+        style: TextStyle(
+          fontSize: 28,
+          color: Colors.cyanAccent,
+        ),
+      );
+    }
+    return const Text(
+        'Temp written',
+        style: TextStyle(
+          fontSize: 30,
+          color: Colors.white,
+        ),
+      );
   }
 }
