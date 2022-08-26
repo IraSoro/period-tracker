@@ -47,23 +47,16 @@ class _TabHomeWidgetState extends State<TabHomeWidget> {
                     height: 140,
                     alignment: Alignment.center,
                   )),
-              // const Positioned(
-              //   bottom: 320,
-              //   right: 20,
-              //   child: ButtonPeriodWidget(),
-              // ),
-              // const Positioned(
-              //   bottom: 100,
-              //   right: 120,
-              //   child: ButtonOvulationWidget(),
-              // ),
-              //-------------------------------------------------------------------------------
               Positioned(
                 bottom: 320,
-                right: 50,
-                child: AnimateDemo3(),
+                right: 20,
+                child: ButtonPeriodWidget(),
               ),
-              //-------------------------------------------------------------------------------
+              const Positioned(
+                bottom: 100,
+                right: 120,
+                child: ButtonOvulationWidget(),
+              ),
               ClipPath(
                   clipper: WaveClipperBottom(),
                   child: Container(
@@ -187,47 +180,6 @@ class _ButtonOvulationWidgetState extends State<ButtonOvulationWidget> {
   }
 }
 
-class ButtonPeriodWidget extends StatefulWidget {
-  const ButtonPeriodWidget({Key? key}) : super(key: key);
-
-  @override
-  State<ButtonPeriodWidget> createState() => _ButtonPeriodWidgetState();
-}
-
-class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget> {
-  bool selected = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selected = !selected;
-        });
-      },
-      child: Container(
-        child: Center(
-          child: AnimatedContainer(
-            decoration: BoxDecoration(
-              color: selected ? Colors.deepPurple : Colors.deepPurple.shade400,
-              border: Border.all(
-                  width: selected ? 0 : 10, color: Colors.deepPurple.shade200),
-              borderRadius: BorderRadius.circular(120),
-            ),
-            width: 220.0,
-            height: 220.0,
-            // color: selected ? Colors.red : Colors.blue,
-            alignment: Alignment.center,
-            duration: const Duration(seconds: 1),
-            curve: Curves.easeInOutBack,
-            child: InfPeriodWidget(),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class InfPeriodWidget extends StatefulWidget {
   const InfPeriodWidget({Key? key}) : super(key: key);
 
@@ -240,11 +192,15 @@ class _InfPeriodWidgetState extends State<InfPeriodWidget> {
   @override
   Widget build(BuildContext context) {
     if (!infPeriod.item1) {
-      return const Text(
-        'Enter settings',
-        style: TextStyle(
-          fontSize: 30,
-          color: Colors.white,
+      return Container(
+        alignment: Alignment.center,
+        padding: EdgeInsets.only(top: 60.0),
+        child: const Text(
+          'Enter settings',
+          style: TextStyle(
+            fontSize: 30,
+            color: Colors.white,
+          ),
         ),
       );
     }
@@ -303,11 +259,15 @@ class _InfPeriodWidgetState extends State<InfPeriodWidget> {
         ),
       );
     }
-    return const Text(
-      'Period today',
-      style: TextStyle(
-        fontSize: 30,
-        color: Colors.white,
+    return Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.only(top: 60.0),
+      child: const Text(
+        'Period today',
+        style: TextStyle(
+          fontSize: 30,
+          color: Colors.deepOrange,
+        ),
       ),
     );
   }
@@ -376,12 +336,12 @@ class _InfOvulationWidgetState extends State<InfOvulationWidget> {
   }
 }
 
-class AnimateDemo3 extends StatefulWidget {
+class ButtonPeriodWidget extends StatefulWidget {
   @override
-  _AnimateDemo3State createState() => _AnimateDemo3State();
+  _ButtonPeriodWidgetState createState() => _ButtonPeriodWidgetState();
 }
 
-class _AnimateDemo3State extends State<AnimateDemo3>
+class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController;
   late Animation animationSize;
@@ -418,6 +378,33 @@ class _AnimateDemo3State extends State<AnimateDemo3>
     await animationController.reverse().orCancel;
   }
 
+  Widget _output() {
+    if (!tempLoc.getMenstruation().item1) {
+      return Column(
+        children: const [
+          InfPeriodWidget(),
+        ],
+      );
+    }
+    return Column(
+      children: [
+        InfPeriodWidget(),
+        OutlinedButton(
+          style: OutlinedButton.styleFrom(
+            side: const BorderSide(width: 5.0, color: Colors.amber),
+          ),
+          child: const Text(
+            "Mark",
+            style: TextStyle(fontSize: 18, color: Colors.amber),
+          ),
+          onPressed: () {
+            _play();
+          },
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -434,23 +421,7 @@ class _AnimateDemo3State extends State<AnimateDemo3>
                   color: animationBorderColor.value,
                 )),
             child: Center(
-              child: Column(
-                children: [
-                  InfPeriodWidget(),
-                  OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(width: 5.0, color: Colors.amber),
-                    ),
-                    child: const Text(
-                      "Mark",
-                      style: TextStyle(fontSize: 18, color: Colors.amber),
-                    ),
-                    onPressed: () {
-                      _play();
-                    },
-                  ),
-                ],
-              ),
+              child: _output(),
             ),
           );
         });
