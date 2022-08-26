@@ -47,16 +47,23 @@ class _TabHomeWidgetState extends State<TabHomeWidget> {
                     height: 140,
                     alignment: Alignment.center,
                   )),
-              const Positioned(
+              // const Positioned(
+              //   bottom: 320,
+              //   right: 20,
+              //   child: ButtonPeriodWidget(),
+              // ),
+              // const Positioned(
+              //   bottom: 100,
+              //   right: 120,
+              //   child: ButtonOvulationWidget(),
+              // ),
+              //-------------------------------------------------------------------------------
+              Positioned(
                 bottom: 320,
-                right: 20,
-                child: const ButtonPeriodWidget(),
+                right: 50,
+                child: AnimateDemo3(),
               ),
-              const Positioned(
-                bottom: 100,
-                right: 120,
-                child: const ButtonOvulationWidget(),
-              ),
+              //-------------------------------------------------------------------------------
               ClipPath(
                   clipper: WaveClipperBottom(),
                   child: Container(
@@ -170,7 +177,7 @@ class _ButtonOvulationWidgetState extends State<ButtonOvulationWidget> {
             height: 220.0,
             // color: selected ? Colors.red : Colors.blue,
             alignment: Alignment.center,
-            duration: const Duration(seconds: 1),
+            duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOutBack,
             child: InfOvulationWidget(),
           ),
@@ -360,11 +367,92 @@ class _InfOvulationWidgetState extends State<InfOvulationWidget> {
       );
     }
     return const Text(
-        'Temp written',
-        style: TextStyle(
-          fontSize: 30,
-          color: Colors.white,
-        ),
-      );
+      'Temp written',
+      style: TextStyle(
+        fontSize: 30,
+        color: Colors.white,
+      ),
+    );
+  }
+}
+
+class AnimateDemo3 extends StatefulWidget {
+  @override
+  _AnimateDemo3State createState() => _AnimateDemo3State();
+}
+
+class _AnimateDemo3State extends State<AnimateDemo3>
+    with SingleTickerProviderStateMixin {
+  late AnimationController animationController;
+  late Animation animationSize;
+  late Animation animationColor;
+  late Animation animationBorderColor;
+  late CurvedAnimation curvedAnimation;
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(
+      duration: Duration(milliseconds: 200),
+      vsync: this,
+    );
+
+    curvedAnimation =
+        CurvedAnimation(parent: animationController, curve: Curves.ease);
+    animationSize = Tween(begin: 220.0, end: 230.0).animate(curvedAnimation);
+    animationColor =
+        ColorTween(begin: Colors.deepPurple.shade400, end: Colors.deepPurple)
+            .animate(curvedAnimation);
+    animationBorderColor =
+        ColorTween(begin: Colors.deepPurple.shade100, end: Colors.deepPurple)
+            .animate(curvedAnimation);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    animationController.dispose();
+  }
+
+  void _play() async {
+    await animationController.forward().orCancel;
+    await animationController.reverse().orCancel;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+        animation: animationController,
+        builder: (context, child) {
+          return Container(
+            width: animationSize.value,
+            height: animationSize.value,
+            decoration: BoxDecoration(
+                color: animationColor.value,
+                borderRadius: BorderRadius.circular(120),
+                border: Border.all(
+                  width: 10,
+                  color: animationBorderColor.value,
+                )),
+            child: Center(
+              child: Column(
+                children: [
+                  InfPeriodWidget(),
+                  OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(width: 5.0, color: Colors.amber),
+                    ),
+                    child: const Text(
+                      "Mark",
+                      style: TextStyle(fontSize: 18, color: Colors.amber),
+                    ),
+                    onPressed: () {
+                      _play();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
