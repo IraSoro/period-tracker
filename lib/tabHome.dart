@@ -407,7 +407,43 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
+    return Row(children: [
+      Column(children:[
+      Container(height: 120,),
+       Positioned(
+        bottom: 0,
+        right: 0,
+        child: ElevatedButton(
+          child: Column(children: [
+            Icon(Icons.domain_verification, color: Colors.deepPurple.shade50),
+            const Text(
+              "Mark",
+              style: TextStyle(
+                  fontSize: 10, color: Color.fromRGBO(237, 231, 246, 1)),
+            ),
+          ]),
+          style: ButtonStyle(
+            side: MaterialStateProperty.all(
+              const BorderSide(
+                color: Color.fromRGBO(209, 196, 233, 1),
+                width: 7,
+              ),
+            ),
+            shape: MaterialStateProperty.all(CircleBorder()),
+            padding: MaterialStateProperty.all(EdgeInsets.all(30)),
+            backgroundColor:
+                MaterialStateProperty.all(Colors.deepPurple.shade400),
+            overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
+              if (states.contains(MaterialState.pressed))
+                return Colors.deepPurple;
+            }),
+          ),
+          onPressed: () {
+            _play();
+          },
+        ),
+      ),]),
+      Container(width: 10,),
       AnimatedBuilder(
           animation: animationController,
           builder: (context, child) {
@@ -426,39 +462,7 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
               ),
             );
           }),
-      Positioned(
-        bottom: 0,
-        right: 0,
-        child: ElevatedButton(
-          child: Column(children: [
-            Icon(Icons.domain_verification, color: Colors.deepPurple.shade50),
-            const Text(
-              "Mark",
-              style: TextStyle(
-                  fontSize: 10, color: Color.fromRGBO(237, 231, 246, 1)),
-            ),
-          ]),
-          style: ButtonStyle(
-            side: MaterialStateProperty.all(
-              const BorderSide(
-                color: Color.fromRGBO(179, 157, 219, 1),
-                width: 7,
-              ),
-            ),
-            shape: MaterialStateProperty.all(CircleBorder()),
-            padding: MaterialStateProperty.all(EdgeInsets.all(30)),
-            backgroundColor:
-                MaterialStateProperty.all(Colors.deepPurple.shade400),
-            overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-              if (states.contains(MaterialState.pressed))
-                return Colors.deepPurple;
-            }),
-          ),
-          onPressed: () {
-            _play();
-          },
-        ),
-      ),
+     
     ]);
   }
 }
