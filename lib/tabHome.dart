@@ -60,7 +60,7 @@ class _TabHomeWidgetState extends State<TabHomeWidget> {
               ClipPath(
                   clipper: WaveClipperBottom(),
                   child: Container(
-                    color: Colors.deepPurple.shade200,
+                    color: Colors.deepPurple.shade100,
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height - 160,
                   )),
@@ -163,7 +163,7 @@ class _ButtonOvulationWidgetState extends State<ButtonOvulationWidget> {
             decoration: BoxDecoration(
               color: selected ? Colors.deepPurple : Colors.deepPurple.shade400,
               border: Border.all(
-                  width: selected ? 0 : 10, color: Colors.deepPurple.shade200),
+                  width: selected ? 0 : 10, color: Colors.deepPurple.shade100),
               borderRadius: BorderRadius.circular(120),
             ),
             width: 220.0,
