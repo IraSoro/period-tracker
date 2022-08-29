@@ -168,7 +168,6 @@ class _ButtonOvulationWidgetState extends State<ButtonOvulationWidget> {
             ),
             width: 220.0,
             height: 220.0,
-            // color: selected ? Colors.red : Colors.blue,
             alignment: Alignment.center,
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOutBack,
@@ -261,7 +260,6 @@ class _InfPeriodWidgetState extends State<InfPeriodWidget> {
     }
     return Container(
       alignment: Alignment.center,
-      padding: EdgeInsets.only(top: 60.0),
       child: const Text(
         'Period today',
         style: TextStyle(

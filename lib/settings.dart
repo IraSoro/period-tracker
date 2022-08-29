@@ -30,7 +30,7 @@ class _InputWidgetState extends State<InputWidget> {
                   child: Text('Cycle length', textDirection: TextDirection.ltr),
                 ),
               ),
-              LongDropdownWidget(dropdownValue: tempLoc.MidCycleLen),
+              LongDropdownWidget(dropdownValue: tempLoc.getMiddleCycleLen()),
             ],
           ),
           Row(
@@ -44,7 +44,7 @@ class _InputWidgetState extends State<InputWidget> {
                       Text('Period length', textDirection: TextDirection.ltr),
                 ),
               ),
-              ShortDropdownWidget(dropdownValue: tempLoc.MidPeriodLen),
+              ShortDropdownWidget(dropdownValue: tempLoc.getMiddlePeriodLen()),
             ],
           ),
           Row(
@@ -53,7 +53,7 @@ class _InputWidgetState extends State<InputWidget> {
                   child: Padding(
                 padding: const EdgeInsets.only(
                     top: 10.0, bottom: 0.0, left: 20.0, right: 20.0),
-                child: DateTimeWidget(selectedDate: tempLoc.dateLastStart),
+                child: DateTimeWidget(selectedDate: tempLoc.getDateLastStart()),
               ))
             ],
           ),
@@ -64,8 +64,8 @@ class _InputWidgetState extends State<InputWidget> {
                     top: 10, bottom: 0, left: 20, right: 20),
                 child: ElevatedButton(
                   onPressed: () {
-                    if (!(tempLoc.MidCycleLen == 'Choose' ||
-                        tempLoc.MidPeriodLen == 'Choose')) {
+                    if (tempLoc.isInit()) {
+                      tempLoc.addLastMarkCycle;
                       Navigator.popAndPushNamed(context, '/');
                     }
                   },
@@ -108,7 +108,7 @@ class _LongDropdownWidgetState extends State<LongDropdownWidget> {
       onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue!;
-          tempLoc.MidCycleLen = dropdownValue;
+          tempLoc.setMiddleCycleLen(dropdownValue);
         });
       },
       items: <String>[
@@ -181,7 +181,7 @@ class _ShortDropdownWidgetState extends State<ShortDropdownWidget> {
       onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue!;
-          tempLoc.MidPeriodLen = dropdownValue;
+          tempLoc.setMiddlePeriodLen(dropdownValue);
         });
       },
       items: <String>[
@@ -234,7 +234,7 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
       onDateSelected: (DateTime newDate) {
         setState(() {
           selectedDate = newDate;
-          tempLoc.dateLastStart = selectedDate;
+          tempLoc.setDateLastStart(selectedDate);
         });
       },
     );

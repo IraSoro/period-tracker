@@ -2,36 +2,138 @@ import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
 
 class Cycle {
-  int cycleLen = 0;
-  int periodLen = 0;
-  DateTime dateStart = DateTime.now();
+  int _cycleLen = 0;
+  int _periodLen = 0;
+  DateTime _dateStart = DateTime.now();
+
+  Cycle.undefined() {
+    _cycleLen = 0;
+    _periodLen = 0;
+    _dateStart = DateTime.now();
+  }
+
+  Cycle.withParam(int newCycleLen, int newPeriodLen, DateTime newDateStart) {
+    _cycleLen = newCycleLen;
+    _periodLen = newPeriodLen;
+    _dateStart = newDateStart;
+  }
+
+  int getCycleLen() {
+    return _cycleLen;
+  }
+
+  int getPeriodLen() {
+    return _periodLen;
+  }
+
+  DateTime getDateStart() {
+    return _dateStart;
+  }
+
+  setValues(int newCycleLen, int newPeriodLen, DateTime newDateStart) {
+    _cycleLen = newCycleLen;
+    _periodLen = newPeriodLen;
+    _dateStart = newDateStart;
+  }
+
+  void setCycleLen(int newCycleLen) {
+    _cycleLen = newCycleLen;
+  }
+
+  void setPeriodLen(int newPeriodLen) {
+    _periodLen = newPeriodLen;
+  }
+
+  void setDateStart(DateTime newDateStart) {
+    _dateStart = newDateStart;
+  }
 }
 
 class TempStorage {
-  String MidCycleLen = 'Choose';
-  String MidPeriodLen = 'Choose';
-  DateTime dateLastStart = DateTime.now();
-  List<Cycle> arCycles = [];
+  late String _middleCycleLen;
+  late String _middlePeriodLen;
+  late DateTime _dateLastStart;
+  final List<Cycle> _arCycles = [];
 
+  TempStorage() {
+    _middleCycleLen = 'Choose';
+    _middlePeriodLen = 'Choose';
+    _dateLastStart = DateTime.now();
+  }
+
+  bool isInit() {
+    if (tempLoc._middleCycleLen == 'Choose' ||
+        tempLoc._middlePeriodLen == 'Choose') {
+      return false;
+    }
+    return true;
+  }
+
+  String getMiddleCycleLen() {
+    return _middleCycleLen;
+  }
+
+  String getMiddlePeriodLen() {
+    return _middlePeriodLen;
+  }
+
+  DateTime getDateLastStart() {
+    return _dateLastStart;
+  }
+
+  void setMiddleCycleLen(String newMiddleCycleLen) {
+    _middleCycleLen = newMiddleCycleLen;
+  }
+
+  void setMiddlePeriodLen(String newMiddlePeriodLen) {
+    _middlePeriodLen = newMiddlePeriodLen;
+  }
+
+  void setDateLastStart(DateTime newDateLastStart) {
+    _dateLastStart = newDateLastStart;
+  }
+
+  void addNewCycle(Cycle lastCycle) {
+    _arCycles.add(lastCycle);
+    // print('len ar = ${_arCycles.length}');
+  }
+
+  void addLastMarkCycle() {
+    if (_arCycles.isNotEmpty) {
+      _arCycles.last.setValues(int.parse(_middleCycleLen),
+          int.parse(_middlePeriodLen), _dateLastStart);
+      return;
+    }
+    Cycle markCycle = Cycle.withParam(int.parse(_middleCycleLen),
+        int.parse(_middlePeriodLen), _dateLastStart);
+    _arCycles.add(markCycle);
+  }
+
+  Cycle getLastCycle() {
+    return _arCycles.last;
+  }
+
+//TODO: rewrite!
   Tuple2<bool, int> getMenstruation() {
-    if (MidCycleLen == 'Choose' || MidPeriodLen == 'Choose') {
-      return Tuple2<bool, int>(false, 0);
+    if (_middleCycleLen == 'Choose' || _middlePeriodLen == 'Choose') {
+      return const Tuple2<bool, int>(false, 0);
     }
 
-    int daysCycle = int.parse(MidCycleLen);
-    DateTime nextDate = dateLastStart.add(Duration(days: daysCycle));
+    int daysCycle = int.parse(_middleCycleLen);
+    DateTime nextDate = _dateLastStart.add(Duration(days: daysCycle));
     Duration dif = nextDate.difference(DateTime.now());
 
     return Tuple2<bool, int>(true, dif.inDays);
   }
 
+//TODO: rewrite!
   Tuple2<bool, int> getOvulation() {
-    if (MidCycleLen == 'Choose' || MidPeriodLen == 'Choose') {
-      return Tuple2<bool, int>(false, 0);
+    if (_middleCycleLen == 'Choose' || _middlePeriodLen == 'Choose') {
+      return const Tuple2<bool, int>(false, 0);
     }
 
-    int daysCycle = int.parse(MidCycleLen);
-    DateTime ovulationDate = dateLastStart.add(Duration(days: daysCycle - 14));
+    int daysCycle = int.parse(_middleCycleLen);
+    DateTime ovulationDate = _dateLastStart.add(Duration(days: daysCycle - 14));
 
     Duration dif = ovulationDate.difference(DateTime.now());
 
