@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'settings.dart';
 import 'tabHome.dart';
-import 'tabCalendar.dart';
+import 'tabHistory.dart';
 import 'tabNotes.dart';
 
 void main() {
@@ -39,7 +39,7 @@ class MainScreen extends StatelessWidget {
                   text: 'home',
                 ),
                 Tab(
-                  text: 'calendar',
+                  text: 'history',
                 ),
                 Tab(text: 'notes'),
               ],
@@ -49,7 +49,7 @@ class MainScreen extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.settings),
                 onPressed: () {
-                  Navigator.pushNamed(context, '/settings');
+                  Navigator.popAndPushNamed(context, '/settings');
                 },
               )
             ],
@@ -57,7 +57,7 @@ class MainScreen extends StatelessWidget {
           body: const TabBarView(
             children: [
               TabHomeWidget(),
-              TabCalendarWidget(),
+              TabHistoryWidget(),
               TabNotesWidget(),
             ],
           ),

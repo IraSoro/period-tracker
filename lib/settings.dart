@@ -27,7 +27,7 @@ class _InputWidgetState extends State<InputWidget> {
                     EdgeInsets.only(top: 10, bottom: 0, left: 20, right: 20),
                 child: Align(
                   alignment: Alignment.topCenter,
-                  child: Text('Длина циклов', textDirection: TextDirection.ltr),
+                  child: Text('Cycle length', textDirection: TextDirection.ltr),
                 ),
               ),
               LongDropdownWidget(dropdownValue: tempLoc.MidCycleLen),
@@ -41,7 +41,7 @@ class _InputWidgetState extends State<InputWidget> {
                 child: Align(
                   alignment: Alignment.topCenter,
                   child:
-                      Text('Длина месячных', textDirection: TextDirection.ltr),
+                      Text('Period length', textDirection: TextDirection.ltr),
                 ),
               ),
               ShortDropdownWidget(dropdownValue: tempLoc.MidPeriodLen),
@@ -51,10 +51,27 @@ class _InputWidgetState extends State<InputWidget> {
             children: [
               Expanded(
                   child: Padding(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                     top: 10.0, bottom: 0.0, left: 20.0, right: 20.0),
                 child: DateTimeWidget(selectedDate: tempLoc.dateLastStart),
               ))
+            ],
+          ),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    top: 10, bottom: 0, left: 20, right: 20),
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (!(tempLoc.MidCycleLen == 'Choose' ||
+                        tempLoc.MidPeriodLen == 'Choose')) {
+                      Navigator.popAndPushNamed(context, '/');
+                    }
+                  },
+                  child: const Text('Confirm'),
+                ),
+              ),
             ],
           ),
         ],
@@ -210,7 +227,7 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
         suffixIcon: Icon(Icons.event_note),
-        labelText: 'Начало последней менструации',
+        labelText: 'Start of last period',
       ),
       mode: DateTimeFieldPickerMode.date,
       autovalidateMode: AutovalidateMode.always,

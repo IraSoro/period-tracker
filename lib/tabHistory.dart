@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class TabCalendarWidget extends StatefulWidget {
-  const TabCalendarWidget({Key? key}) : super(key: key);
+class TabHistoryWidget extends StatefulWidget {
+  const TabHistoryWidget({Key? key}) : super(key: key);
 
   @override
-  State<TabCalendarWidget> createState() => _TabCalendarWidgetState();
+  State<TabHistoryWidget> createState() => _TabHistoryWidgetState();
 }
 
-class _TabCalendarWidgetState extends State<TabCalendarWidget> {
+class _TabHistoryWidgetState extends State<TabHistoryWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -19,7 +19,7 @@ class _TabCalendarWidgetState extends State<TabCalendarWidget> {
         children: <Widget>[
           Row(
             children: const [
-              Text('Calendar'),
+              Text('History'),
             ],
           ),
         ],
