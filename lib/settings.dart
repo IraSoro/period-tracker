@@ -65,7 +65,7 @@ class _InputWidgetState extends State<InputWidget> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (tempLoc.isInit()) {
-                      tempLoc.addLastMarkCycle;
+                      tempLoc.addLastMarkCycle();
                       Navigator.popAndPushNamed(context, '/');
                     }
                   },

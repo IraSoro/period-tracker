@@ -53,7 +53,7 @@ class TempStorage {
   late String _middleCycleLen;
   late String _middlePeriodLen;
   late DateTime _dateLastStart;
-  final List<Cycle> _arCycles = [];
+  final _arCycles = List<Cycle>.empty(growable: true);
 
   TempStorage() {
     _middleCycleLen = 'Choose';
@@ -95,7 +95,6 @@ class TempStorage {
 
   void addNewCycle(Cycle lastCycle) {
     _arCycles.add(lastCycle);
-    // print('len ar = ${_arCycles.length}');
   }
 
   void addLastMarkCycle() {
@@ -108,33 +107,34 @@ class TempStorage {
         int.parse(_middlePeriodLen), _dateLastStart);
     _arCycles.add(markCycle);
   }
-
-  Cycle getLastCycle() {
-    return _arCycles.last;
+//TODO: This function is for debugging. Then remove.
+  int getLenArr(){
+    return _arCycles.length;
   }
 
-//TODO: rewrite!
   Tuple2<bool, int> getMenstruation() {
     if (_middleCycleLen == 'Choose' || _middlePeriodLen == 'Choose') {
       return const Tuple2<bool, int>(false, 0);
     }
+    Cycle lastCycle = _arCycles.last;
 
-    int daysCycle = int.parse(_middleCycleLen);
-    DateTime nextDate = _dateLastStart.add(Duration(days: daysCycle));
+    int daysCycle = lastCycle.getCycleLen();
+    DateTime lastDate = lastCycle.getDateStart();
+    DateTime nextDate = lastDate.add(Duration(days: daysCycle));
     Duration dif = nextDate.difference(DateTime.now());
 
     return Tuple2<bool, int>(true, dif.inDays);
   }
 
-//TODO: rewrite!
   Tuple2<bool, int> getOvulation() {
     if (_middleCycleLen == 'Choose' || _middlePeriodLen == 'Choose') {
       return const Tuple2<bool, int>(false, 0);
     }
+    Cycle lastCycle = _arCycles.last;
 
-    int daysCycle = int.parse(_middleCycleLen);
-    DateTime ovulationDate = _dateLastStart.add(Duration(days: daysCycle - 14));
-
+    int daysCycle = lastCycle.getCycleLen();
+    DateTime lastDate = lastCycle.getDateStart();
+    DateTime ovulationDate = lastDate.add(Duration(days: daysCycle - 14));
     Duration dif = ovulationDate.difference(DateTime.now());
 
     return Tuple2<bool, int>(true, dif.inDays);
