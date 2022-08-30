@@ -50,30 +50,29 @@ class Cycle {
 }
 
 class TempStorage {
-  late String _middleCycleLen;
-  late String _middlePeriodLen;
+  late int _middleCycleLen;
+  late int _middlePeriodLen;
   late DateTime _dateLastStart;
   final _arCycles = List<Cycle>.empty(growable: true);
 
   TempStorage() {
-    _middleCycleLen = 'Choose';
-    _middlePeriodLen = 'Choose';
+    _middleCycleLen = -1;
+    _middlePeriodLen = -1;
     _dateLastStart = DateTime.now();
   }
 
   bool isInit() {
-    if (tempLoc._middleCycleLen == 'Choose' ||
-        tempLoc._middlePeriodLen == 'Choose') {
+    if (_middleCycleLen == -1 || _middlePeriodLen == -1) {
       return false;
     }
     return true;
   }
 
-  String getMiddleCycleLen() {
+  int getMiddleCycleLen() {
     return _middleCycleLen;
   }
 
-  String getMiddlePeriodLen() {
+  int getMiddlePeriodLen() {
     return _middlePeriodLen;
   }
 
@@ -81,11 +80,11 @@ class TempStorage {
     return _dateLastStart;
   }
 
-  void setMiddleCycleLen(String newMiddleCycleLen) {
+  void setMiddleCycleLen(int newMiddleCycleLen) {
     _middleCycleLen = newMiddleCycleLen;
   }
 
-  void setMiddlePeriodLen(String newMiddlePeriodLen) {
+  void setMiddlePeriodLen(int newMiddlePeriodLen) {
     _middlePeriodLen = newMiddlePeriodLen;
   }
 
@@ -99,21 +98,22 @@ class TempStorage {
 
   void addLastMarkCycle() {
     if (_arCycles.isNotEmpty) {
-      _arCycles.last.setValues(int.parse(_middleCycleLen),
-          int.parse(_middlePeriodLen), _dateLastStart);
+      _arCycles.last
+          .setValues(_middleCycleLen, _middlePeriodLen, _dateLastStart);
       return;
     }
-    Cycle markCycle = Cycle.withParam(int.parse(_middleCycleLen),
-        int.parse(_middlePeriodLen), _dateLastStart);
+    Cycle markCycle =
+        Cycle.withParam(_middleCycleLen, _middlePeriodLen, _dateLastStart);
     _arCycles.add(markCycle);
   }
+
 //TODO: This function is for debugging. Then remove.
-  int getLenArr(){
+  int getLenArr() {
     return _arCycles.length;
   }
 
   Tuple2<bool, int> getMenstruation() {
-    if (_middleCycleLen == 'Choose' || _middlePeriodLen == 'Choose') {
+    if (_middleCycleLen == -1 || _middlePeriodLen == -1) {
       return const Tuple2<bool, int>(false, 0);
     }
     Cycle lastCycle = _arCycles.last;
@@ -127,7 +127,7 @@ class TempStorage {
   }
 
   Tuple2<bool, int> getOvulation() {
-    if (_middleCycleLen == 'Choose' || _middlePeriodLen == 'Choose') {
+    if (_middleCycleLen == -1 || _middlePeriodLen == -1) {
       return const Tuple2<bool, int>(false, 0);
     }
     Cycle lastCycle = _arCycles.last;

@@ -30,7 +30,7 @@ class _InputWidgetState extends State<InputWidget> {
                   child: Text('Cycle length', textDirection: TextDirection.ltr),
                 ),
               ),
-              LongDropdownWidget(dropdownValue: tempLoc.getMiddleCycleLen()),
+              CycleDropdownWidget(dropdownValue: tempLoc.getMiddleCycleLen()),
             ],
           ),
           Row(
@@ -44,7 +44,7 @@ class _InputWidgetState extends State<InputWidget> {
                       Text('Period length', textDirection: TextDirection.ltr),
                 ),
               ),
-              ShortDropdownWidget(dropdownValue: tempLoc.getMiddlePeriodLen()),
+              PeriodDropdownWidget(dropdownValue: tempLoc.getMiddlePeriodLen()),
             ],
           ),
           Row(
@@ -80,125 +80,132 @@ class _InputWidgetState extends State<InputWidget> {
   }
 }
 
-class LongDropdownWidget extends StatefulWidget {
-  String dropdownValue = 'Choose';
+class CycleDropdownWidget extends StatefulWidget {
+  int dropdownValue = 14;
 
-  LongDropdownWidget({Key? key, required this.dropdownValue}) : super(key: key);
+  CycleDropdownWidget({Key? key, required this.dropdownValue})
+      : super(key: key);
 
   @override
-  State<LongDropdownWidget> createState() =>
-      _LongDropdownWidgetState(this.dropdownValue);
+  State<CycleDropdownWidget> createState() =>
+      _CycleDropdownWidgetState(this.dropdownValue);
 }
 
-class _LongDropdownWidgetState extends State<LongDropdownWidget> {
-  String dropdownValue = 'Choose';
+class _CycleDropdownWidgetState extends State<CycleDropdownWidget> {
+  int dropdownValue = 14;
 
-  _LongDropdownWidgetState(this.dropdownValue);
+  List<int> list = [
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42
+  ];
+
+  _CycleDropdownWidgetState(this.dropdownValue);
+
+  int getLenCycle() {
+    if (-1 == dropdownValue) {
+      return 14;
+    }
+    return dropdownValue;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
+    return DropdownButton<int>(
+      value: getLenCycle(),
       elevation: 16,
       style: const TextStyle(color: Colors.deepPurple),
       underline: Container(
         height: 2,
         color: Colors.deepPurpleAccent,
       ),
-      onChanged: (String? newValue) {
+      onChanged: (int? newValue) {
         setState(() {
           dropdownValue = newValue!;
           tempLoc.setMiddleCycleLen(dropdownValue);
         });
       },
-      items: <String>[
-        'Choose',
-        '14',
-        '15',
-        '16',
-        '17',
-        '18',
-        '19',
-        '20',
-        '21',
-        '22',
-        '23',
-        '24',
-        '25',
-        '26',
-        '27',
-        '28',
-        '29',
-        '30',
-        '31',
-        '32',
-        '33',
-        '34',
-        '35',
-        '36',
-        '37',
-        '38',
-        '39',
-        '40',
-        '41',
-        '42'
-      ].map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
+      items: list.map<DropdownMenuItem<int>>((int value) {
+        return DropdownMenuItem<int>(
           value: value,
-          child: Text(value),
+          child: Text('$value'),
         );
       }).toList(),
     );
   }
 }
 
-class ShortDropdownWidget extends StatefulWidget {
-  String dropdownValue = 'Choose';
+class PeriodDropdownWidget extends StatefulWidget {
+  int dropdownValue = 1;
 
-  ShortDropdownWidget({Key? key, required this.dropdownValue})
+  PeriodDropdownWidget({Key? key, required this.dropdownValue})
       : super(key: key);
 
   @override
-  State<ShortDropdownWidget> createState() =>
-      _ShortDropdownWidgetState(this.dropdownValue);
+  State<PeriodDropdownWidget> createState() =>
+      _PeriodDropdownWidgetState(this.dropdownValue);
 }
 
-class _ShortDropdownWidgetState extends State<ShortDropdownWidget> {
-  String dropdownValue = 'Choose';
+class _PeriodDropdownWidgetState extends State<PeriodDropdownWidget> {
+  int dropdownValue = 1;
 
-  _ShortDropdownWidgetState(this.dropdownValue);
+  List<int> list = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+  _PeriodDropdownWidgetState(this.dropdownValue);
+
+  int getLenPeriod() {
+    if (-1 == dropdownValue) {
+      return 1;
+    }
+    return dropdownValue;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DropdownButton<String>(
-      value: dropdownValue,
+    return DropdownButton<int>(
+      value: getLenPeriod(),
       elevation: 16,
       style: const TextStyle(color: Colors.deepPurple),
       underline: Container(
         height: 2,
         color: Colors.deepPurpleAccent,
       ),
-      onChanged: (String? newValue) {
+      onChanged: (int? newValue) {
         setState(() {
           dropdownValue = newValue!;
           tempLoc.setMiddlePeriodLen(dropdownValue);
         });
       },
-      items: <String>[
-        'Choose',
-        '1 ',
-        '2 ',
-        '3 ',
-        '4 ',
-        '5 ',
-        '6 ',
-        '7 ',
-        '8 ',
-        '9 '
-      ].map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
+      items: list.map<DropdownMenuItem<int>>((int value) {
+        return DropdownMenuItem<int>(
           value: value,
-          child: Text(value),
+          child: Text('$value'),
         );
       }).toList(),
     );
