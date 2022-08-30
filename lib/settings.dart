@@ -30,7 +30,7 @@ class _InputWidgetState extends State<InputWidget> {
                   child: Text('Cycle length', textDirection: TextDirection.ltr),
                 ),
               ),
-              CycleDropdownWidget(dropdownValue: tempLoc.getMiddleCycleLen()),
+              CycleDropdownWidget(dropdownValue: tempLoc.getLastCycleLen()),
             ],
           ),
           Row(
@@ -44,7 +44,7 @@ class _InputWidgetState extends State<InputWidget> {
                       Text('Period length', textDirection: TextDirection.ltr),
                 ),
               ),
-              PeriodDropdownWidget(dropdownValue: tempLoc.getMiddlePeriodLen()),
+              PeriodDropdownWidget(dropdownValue: tempLoc.getLastPeriodLen()),
             ],
           ),
           Row(
@@ -53,7 +53,7 @@ class _InputWidgetState extends State<InputWidget> {
                   child: Padding(
                 padding: const EdgeInsets.only(
                     top: 10.0, bottom: 0.0, left: 20.0, right: 20.0),
-                child: DateTimeWidget(selectedDate: tempLoc.getDateLastStart()),
+                child: DateTimeWidget(selectedDate: tempLoc.getLastDateStart()),
               ))
             ],
           ),
@@ -148,7 +148,7 @@ class _CycleDropdownWidgetState extends State<CycleDropdownWidget> {
       onChanged: (int? newValue) {
         setState(() {
           dropdownValue = newValue!;
-          tempLoc.setMiddleCycleLen(dropdownValue);
+          tempLoc.setStartCycleLen(dropdownValue);
         });
       },
       items: list.map<DropdownMenuItem<int>>((int value) {
@@ -199,7 +199,7 @@ class _PeriodDropdownWidgetState extends State<PeriodDropdownWidget> {
       onChanged: (int? newValue) {
         setState(() {
           dropdownValue = newValue!;
-          tempLoc.setMiddlePeriodLen(dropdownValue);
+          tempLoc.setStartPeriodLen(dropdownValue);
         });
       },
       items: list.map<DropdownMenuItem<int>>((int value) {
@@ -241,7 +241,7 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
       onDateSelected: (DateTime newDate) {
         setState(() {
           selectedDate = newDate;
-          tempLoc.setDateLastStart(selectedDate);
+          tempLoc.setStartDateLastStart(selectedDate);
         });
       },
     );

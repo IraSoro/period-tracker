@@ -50,60 +50,70 @@ class Cycle {
 }
 
 class TempStorage {
-  late int _middleCycleLen;
-  late int _middlePeriodLen;
-  late DateTime _dateLastStart;
+  late int _startCycleLen;
+  late int _startPeriodLen;
+  late DateTime _startDateLastStart;
+
   final _arCycles = List<Cycle>.empty(growable: true);
 
   TempStorage() {
-    _middleCycleLen = -1;
-    _middlePeriodLen = -1;
-    _dateLastStart = DateTime.now();
+    _startCycleLen = -1;
+    _startPeriodLen = -1;
+    _startDateLastStart = DateTime.now();
   }
 
   bool isInit() {
-    if (_middleCycleLen == -1 || _middlePeriodLen == -1) {
+    if (_startCycleLen == -1 || _startPeriodLen == -1) {
       return false;
     }
     return true;
   }
 
-  int getMiddleCycleLen() {
-    return _middleCycleLen;
+  int getLastCycleLen() {
+    if (_arCycles.isEmpty) {
+      return _startCycleLen;
+    }
+    return _arCycles.last.getCycleLen();
   }
 
-  int getMiddlePeriodLen() {
-    return _middlePeriodLen;
+  int getLastPeriodLen() {
+    if (_arCycles.isEmpty) {
+      return _startPeriodLen;
+    }
+    return _arCycles.last.getPeriodLen();
   }
 
-  DateTime getDateLastStart() {
-    return _dateLastStart;
+  DateTime getLastDateStart() {
+    if (_arCycles.isEmpty) {
+      return _startDateLastStart;
+    }
+    return _arCycles.last.getDateStart();
   }
 
-  void setMiddleCycleLen(int newMiddleCycleLen) {
-    _middleCycleLen = newMiddleCycleLen;
+  void setStartCycleLen(int newStartCycleLen) {
+    _startCycleLen = newStartCycleLen;
   }
 
-  void setMiddlePeriodLen(int newMiddlePeriodLen) {
-    _middlePeriodLen = newMiddlePeriodLen;
+  void setStartPeriodLen(int newStartPeriodLen) {
+    _startPeriodLen = newStartPeriodLen;
   }
 
-  void setDateLastStart(DateTime newDateLastStart) {
-    _dateLastStart = newDateLastStart;
+  void setStartDateLastStart(DateTime newStartDateLastStart) {
+    _startDateLastStart = newStartDateLastStart;
   }
 
-  void addNewCycle(Cycle lastCycle) {
-    _arCycles.add(lastCycle);
+  void addNewCycle(Cycle newCycle) {
+    _arCycles.add(newCycle);
   }
 
   void addLastMarkCycle() {
     if (_arCycles.isNotEmpty) {
       _arCycles.last
-          .setValues(_middleCycleLen, _middlePeriodLen, _dateLastStart);
+          .setValues(_startCycleLen, _startPeriodLen, _startDateLastStart);
       return;
     }
     Cycle markCycle =
-        Cycle.withParam(_middleCycleLen, _middlePeriodLen, _dateLastStart);
+        Cycle.withParam(_startCycleLen, _startPeriodLen, _startDateLastStart);
     _arCycles.add(markCycle);
   }
 
@@ -113,7 +123,7 @@ class TempStorage {
   }
 
   Tuple2<bool, int> getMenstruation() {
-    if (_middleCycleLen == -1 || _middlePeriodLen == -1) {
+    if (_startCycleLen == -1 || _startPeriodLen == -1) {
       return const Tuple2<bool, int>(false, 0);
     }
     Cycle lastCycle = _arCycles.last;
@@ -127,7 +137,7 @@ class TempStorage {
   }
 
   Tuple2<bool, int> getOvulation() {
-    if (_middleCycleLen == -1 || _middlePeriodLen == -1) {
+    if (_startCycleLen == -1 || _startPeriodLen == -1) {
       return const Tuple2<bool, int>(false, 0);
     }
     Cycle lastCycle = _arCycles.last;
