@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application/tempFile.dart';
 
 import 'package:tuple/tuple.dart';
+import 'package:date_picker_timeline/date_picker_timeline.dart';
 
 import 'tempFile.dart';
 
@@ -14,6 +15,47 @@ class TabHomeWidget extends StatefulWidget {
 
 class _TabHomeWidgetState extends State<TabHomeWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  DateTime _selectedDate = DateTime.now();
+
+  Widget _datePicker() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        DatePicker(
+          DateTime.now().subtract(const Duration(days: 30)),
+          initialSelectedDate: DateTime.now(),
+          monthTextStyle: const TextStyle(
+              fontFamily: 'Montserrat',
+              color: Color.fromRGBO(209, 196, 233, 1),
+              fontSize: 10),
+          dateTextStyle: const TextStyle(
+              fontFamily: 'MontSerrat',
+              fontWeight: FontWeight.bold,
+              color: Color.fromRGBO(209, 196, 233, 1),
+              fontSize: 15),
+          dayTextStyle: const TextStyle(
+              fontFamily: 'Montserrat',
+              color: Color.fromRGBO(209, 196, 233, 1),
+              fontSize: 10),
+          selectionColor: Colors.deepPurple.shade100,
+          selectedTextColor: Colors.deepPurple,
+          height: 70,
+          width: 50,
+          onDateChange: (date) {
+            setState(() {
+              _selectedDate = date;
+            });
+          },
+        ),
+        const SizedBox(height: 16),
+        Text(
+          'Date: $_selectedDate',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodyText2,
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +64,7 @@ class _TabHomeWidgetState extends State<TabHomeWidget> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Container(
-              child: Stack(
+          Stack(
             children: [
               Container(
                 width: MediaQuery.of(context).size.width,
@@ -71,8 +112,9 @@ class _TabHomeWidgetState extends State<TabHomeWidget> {
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height - 140,
                   )),
+              _datePicker(),
             ],
-          )),
+          ),
         ],
       ),
     );
@@ -372,8 +414,15 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
   }
 
   void _play() async {
+    await _addNewCycle();
     await animationController.forward().orCancel;
     await animationController.reverse().orCancel;
+    print('len = ${tempLoc.getLenArr()}');
+  }
+
+  Future _addNewCycle() async {
+    Cycle newCycle = Cycle.withParam(1, 1, DateTime.now());
+    tempLoc.addNewCycle(newCycle);
   }
 
   Widget _output() {
