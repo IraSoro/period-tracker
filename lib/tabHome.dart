@@ -240,7 +240,7 @@ class _InfPeriodWidgetState extends State<InfPeriodWidget> {
           'Enter settings',
           style: TextStyle(
             fontSize: 30,
-            color: Colors.white,
+            color: Color.fromRGBO(237, 231, 246, 1),
           ),
         ),
       );
@@ -255,7 +255,7 @@ class _InfPeriodWidgetState extends State<InfPeriodWidget> {
               'Period is',
               style: TextStyle(
                 fontSize: 20,
-                color: Colors.white,
+                color: Color.fromRGBO(237, 231, 246, 1),
               ),
             ),
             Text(
@@ -269,7 +269,7 @@ class _InfPeriodWidgetState extends State<InfPeriodWidget> {
               'days late',
               style: TextStyle(
                 fontSize: 20,
-                color: Colors.white,
+                color: Color.fromRGBO(237, 231, 246, 1),
               ),
             )
           ],
@@ -286,7 +286,7 @@ class _InfPeriodWidgetState extends State<InfPeriodWidget> {
               'Period in',
               style: TextStyle(
                 fontSize: 20,
-                color: Colors.white,
+                color: Color.fromRGBO(237, 231, 246, 1),
               ),
             ),
             Text(
@@ -329,7 +329,7 @@ class _InfOvulationWidgetState extends State<InfOvulationWidget> {
         'Enter settings',
         style: TextStyle(
           fontSize: 30,
-          color: Colors.amber,
+          color: Color.fromRGBO(237, 231, 246, 1),
         ),
       );
     }
@@ -343,7 +343,7 @@ class _InfOvulationWidgetState extends State<InfOvulationWidget> {
               'Ovulation in',
               style: TextStyle(
                 fontSize: 20,
-                color: Colors.white,
+                color: Color.fromRGBO(237, 231, 246, 1),
               ),
             ),
             Text(
@@ -370,7 +370,7 @@ class _InfOvulationWidgetState extends State<InfOvulationWidget> {
       'Temp written',
       style: TextStyle(
         fontSize: 30,
-        color: Colors.white,
+        color: Color.fromRGBO(237, 231, 246, 1),
       ),
     );
   }
