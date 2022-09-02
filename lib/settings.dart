@@ -1,3 +1,4 @@
+//TODO: Then show this page only on the start screen
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
 
@@ -30,7 +31,7 @@ class _InputWidgetState extends State<InputWidget> {
                   child: Text('Cycle length', textDirection: TextDirection.ltr),
                 ),
               ),
-              CycleDropdownWidget(dropdownValue: tempLoc.getLastCycleLen()),
+              CycleDropdownWidget(dropdownCycle: tempLoc.getLastCycleLen()),
             ],
           ),
           Row(
@@ -44,7 +45,7 @@ class _InputWidgetState extends State<InputWidget> {
                       Text('Period length', textDirection: TextDirection.ltr),
                 ),
               ),
-              PeriodDropdownWidget(dropdownValue: tempLoc.getLastPeriodLen()),
+              PeriodDropdownWidget(dropdownPeriod: tempLoc.getLastPeriodLen()),
             ],
           ),
           Row(
@@ -65,7 +66,8 @@ class _InputWidgetState extends State<InputWidget> {
                 child: ElevatedButton(
                   onPressed: () {
                     if (tempLoc.isInit()) {
-                      tempLoc.addLastMarkCycle();
+                      tempLoc.getLenArr();
+                      tempLoc.outputCycles();
                       Navigator.popAndPushNamed(context, '/');
                     }
                   },
@@ -81,64 +83,25 @@ class _InputWidgetState extends State<InputWidget> {
 }
 
 class CycleDropdownWidget extends StatefulWidget {
-  int dropdownValue = 14;
+  int dropdownCycle = tempLoc.listCycle[0];
 
-  CycleDropdownWidget({Key? key, required this.dropdownValue})
+  CycleDropdownWidget({Key? key, required this.dropdownCycle})
       : super(key: key);
 
   @override
   State<CycleDropdownWidget> createState() =>
-      _CycleDropdownWidgetState(this.dropdownValue);
+      _CycleDropdownWidgetState(this.dropdownCycle);
 }
 
 class _CycleDropdownWidgetState extends State<CycleDropdownWidget> {
-  int dropdownValue = 14;
+  int dropdownCycle = tempLoc.listCycle[0];
 
-  List<int> list = [
-    14,
-    15,
-    16,
-    17,
-    18,
-    19,
-    20,
-    21,
-    22,
-    23,
-    24,
-    25,
-    26,
-    27,
-    28,
-    29,
-    30,
-    31,
-    32,
-    33,
-    34,
-    35,
-    36,
-    37,
-    38,
-    39,
-    40,
-    41,
-    42
-  ];
-
-  _CycleDropdownWidgetState(this.dropdownValue);
-
-  int getLenCycle() {
-    if (-1 == dropdownValue) {
-      return 14;
-    }
-    return dropdownValue;
-  }
+  _CycleDropdownWidgetState(this.dropdownCycle);
 
   @override
   Widget build(BuildContext context) {
     return DropdownButton<int>(
-      value: getLenCycle(),
+      value: dropdownCycle,
       elevation: 16,
       style: const TextStyle(color: Colors.deepPurple),
       underline: Container(
@@ -147,11 +110,11 @@ class _CycleDropdownWidgetState extends State<CycleDropdownWidget> {
       ),
       onChanged: (int? newValue) {
         setState(() {
-          dropdownValue = newValue!;
-          tempLoc.setStartCycleLen(dropdownValue);
+          dropdownCycle = newValue!;
+          tempLoc.setStartCycleLen(dropdownCycle);
         });
       },
-      items: list.map<DropdownMenuItem<int>>((int value) {
+      items: tempLoc.listCycle.map<DropdownMenuItem<int>>((int value) {
         return DropdownMenuItem<int>(
           value: value,
           child: Text('$value'),
@@ -162,34 +125,25 @@ class _CycleDropdownWidgetState extends State<CycleDropdownWidget> {
 }
 
 class PeriodDropdownWidget extends StatefulWidget {
-  int dropdownValue = 1;
+  int dropdownPeriod = tempLoc.listPeriod[0];
 
-  PeriodDropdownWidget({Key? key, required this.dropdownValue})
+  PeriodDropdownWidget({Key? key, required this.dropdownPeriod})
       : super(key: key);
 
   @override
   State<PeriodDropdownWidget> createState() =>
-      _PeriodDropdownWidgetState(this.dropdownValue);
+      _PeriodDropdownWidgetState(this.dropdownPeriod);
 }
 
 class _PeriodDropdownWidgetState extends State<PeriodDropdownWidget> {
-  int dropdownValue = 1;
+  int dropdownPeriod = tempLoc.listPeriod[0];
 
-  List<int> list = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
-  _PeriodDropdownWidgetState(this.dropdownValue);
-
-  int getLenPeriod() {
-    if (-1 == dropdownValue) {
-      return 1;
-    }
-    return dropdownValue;
-  }
+  _PeriodDropdownWidgetState(this.dropdownPeriod);
 
   @override
   Widget build(BuildContext context) {
     return DropdownButton<int>(
-      value: getLenPeriod(),
+      value: dropdownPeriod,
       elevation: 16,
       style: const TextStyle(color: Colors.deepPurple),
       underline: Container(
@@ -198,11 +152,11 @@ class _PeriodDropdownWidgetState extends State<PeriodDropdownWidget> {
       ),
       onChanged: (int? newValue) {
         setState(() {
-          dropdownValue = newValue!;
-          tempLoc.setStartPeriodLen(dropdownValue);
+          dropdownPeriod = newValue!;
+          tempLoc.setStartPeriodLen(dropdownPeriod);
         });
       },
-      items: list.map<DropdownMenuItem<int>>((int value) {
+      items: tempLoc.listPeriod.map<DropdownMenuItem<int>>((int value) {
         return DropdownMenuItem<int>(
           value: value,
           child: Text('$value'),

@@ -414,15 +414,15 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
   }
 
   void _play() async {
-    await _addNewCycle();
+    if (tempLoc.isInit()) {
+      Cycle newCycle = Cycle.withParams(1, 1, DateTime.now());
+      tempLoc.addNewCycle(newCycle);
+    }
+
     await animationController.forward().orCancel;
     await animationController.reverse().orCancel;
-    print('len = ${tempLoc.getLenArr()}');
-  }
-
-  Future _addNewCycle() async {
-    Cycle newCycle = Cycle.withParam(1, 1, DateTime.now());
-    tempLoc.addNewCycle(newCycle);
+    tempLoc.getLenArr();
+    tempLoc.outputCycles();
   }
 
   Widget _output() {
