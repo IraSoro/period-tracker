@@ -6,6 +6,26 @@ import 'package:date_picker_timeline/date_picker_timeline.dart';
 
 import 'tempFile.dart';
 
+class FrogColor extends InheritedWidget {
+  FrogColor({
+    super.key,
+    required this.color,
+    required super.child,
+  });
+
+  String color;
+
+  static FrogColor of(BuildContext context) {
+    final FrogColor? result =
+        context.dependOnInheritedWidgetOfExactType<FrogColor>();
+    assert(result != null, 'No FrogColor found in context');
+    return result!;
+  }
+
+  @override
+  bool updateShouldNotify(FrogColor old) => color != old.color;
+}
+
 class TabHomeWidget extends StatefulWidget {
   const TabHomeWidget({Key? key}) : super(key: key);
 
@@ -15,109 +35,74 @@ class TabHomeWidget extends StatefulWidget {
 
 class _TabHomeWidgetState extends State<TabHomeWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  DateTime _selectedDate = DateTime.now();
-
-  Widget _datePicker() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        DatePicker(
-          DateTime.now().subtract(const Duration(days: 30)),
-          initialSelectedDate: DateTime.now(),
-          monthTextStyle: const TextStyle(
-              fontFamily: 'Montserrat',
-              color: Color.fromRGBO(209, 196, 233, 1),
-              fontSize: 10),
-          dateTextStyle: const TextStyle(
-              fontFamily: 'MontSerrat',
-              fontWeight: FontWeight.bold,
-              color: Color.fromRGBO(209, 196, 233, 1),
-              fontSize: 15),
-          dayTextStyle: const TextStyle(
-              fontFamily: 'Montserrat',
-              color: Color.fromRGBO(209, 196, 233, 1),
-              fontSize: 10),
-          selectionColor: Colors.deepPurple.shade100,
-          selectedTextColor: Colors.deepPurple,
-          height: 70,
-          width: 50,
-          onDateChange: (date) {
-            setState(() {
-              _selectedDate = date;
-            });
-          },
-        ),
-        const SizedBox(height: 16),
-        Text(
-          'Date: $_selectedDate',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyText2,
-        ),
-      ],
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Stack(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height - 140,
-                color: Colors.deepPurple.shade50,
-              ),
-              Opacity(
-                  opacity: 0.5,
-                  child: ClipPath(
-                      clipper: WaveClipperTop(),
-                      child: Container(
-                        color: Colors.deepPurple.shade200,
-                        width: MediaQuery.of(context).size.width,
-                        height: 160,
-                      ))),
-              ClipPath(
-                  clipper: WaveClipperTop(),
-                  child: Container(
-                    color: Colors.deepPurple.shade300,
-                    width: MediaQuery.of(context).size.width,
-                    height: 140,
-                    alignment: Alignment.center,
-                  )),
-              Positioned(
-                bottom: 320,
-                right: 20,
-                child: ButtonPeriodWidget(),
-              ),
-              const Positioned(
-                bottom: 100,
-                right: 120,
-                child: ButtonOvulationWidget(),
-              ),
-              ClipPath(
-                  clipper: WaveClipperBottom(),
-                  child: Container(
-                    color: Colors.deepPurple.shade100,
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height - 160,
-                  )),
-              ClipPath(
-                  clipper: WaveClipperBottom(),
-                  child: Container(
-                    color: Colors.deepPurple.shade300,
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height - 140,
-                  )),
-              _datePicker(),
-            ],
-          ),
-        ],
-      ),
-    );
+    return Scaffold(
+        body: FrogColor(
+            color: "iraaaaa",
+            child: Builder(builder: (BuildContext innerContext) {
+              return Form(
+                // key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Stack(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height - 140,
+                          color: Colors.deepPurple.shade50,
+                        ),
+                        Opacity(
+                            opacity: 0.5,
+                            child: ClipPath(
+                                clipper: WaveClipperTop(),
+                                child: Container(
+                                  color: Colors.deepPurple.shade200,
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 160,
+                                ))),
+                        ClipPath(
+                            clipper: WaveClipperTop(),
+                            child: Container(
+                              color: Colors.deepPurple.shade300,
+                              width: MediaQuery.of(context).size.width,
+                              height: 140,
+                              alignment: Alignment.center,
+                            )),
+                        Positioned(
+                          bottom: 320,
+                          right: 20,
+                          child: ButtonPeriodWidget(),
+                        ),
+                        const Positioned(
+                          bottom: 100,
+                          right: 120,
+                          child: ButtonOvulationWidget(),
+                        ),
+                        ClipPath(
+                            clipper: WaveClipperBottom(),
+                            child: Container(
+                              color: Colors.deepPurple.shade100,
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height - 160,
+                            )),
+                        ClipPath(
+                            clipper: WaveClipperBottom(),
+                            child: Container(
+                              color: Colors.deepPurple.shade300,
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height - 140,
+                            )),
+                        const DatePickerWidget(),
+                        // Text(FrogColor.of(innerContext).color),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            })));
   }
 }
 
@@ -421,6 +406,7 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
 
     await animationController.forward().orCancel;
     await animationController.reverse().orCancel;
+    //TODO: This is debugging. Then remove.
     tempLoc.getLenArr();
     tempLoc.outputCycles();
   }
@@ -487,9 +473,64 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
           ]),
           onPressed: () {
             _play();
+            print("date = ${FrogColor.of(context).color}");
           },
         ),
       ),
     ]);
+  }
+}
+
+class DatePickerWidget extends StatefulWidget {
+  const DatePickerWidget({Key? key}) : super(key: key);
+
+  @override
+  State<DatePickerWidget> createState() => _DatePickerWidgetState();
+}
+
+class _DatePickerWidgetState extends State<DatePickerWidget> {
+  DateTime selectedDate = DateTime.now();
+
+  @override
+  Widget build(BuildContext context) {
+    // final HomePageState state = HomePage.of(context);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        DatePicker(
+          DateTime.now().subtract(const Duration(days: 30)),
+          initialSelectedDate: DateTime.now(),
+          monthTextStyle: const TextStyle(
+              fontFamily: 'Montserrat',
+              color: Color.fromRGBO(209, 196, 233, 1),
+              fontSize: 10),
+          dateTextStyle: const TextStyle(
+              fontFamily: 'MontSerrat',
+              fontWeight: FontWeight.bold,
+              color: Color.fromRGBO(209, 196, 233, 1),
+              fontSize: 15),
+          dayTextStyle: const TextStyle(
+              fontFamily: 'Montserrat',
+              color: Color.fromRGBO(209, 196, 233, 1),
+              fontSize: 10),
+          selectionColor: Colors.deepPurple.shade100,
+          selectedTextColor: Colors.deepPurple,
+          height: 70,
+          width: 50,
+          onDateChange: (date) {
+            setState(() {
+              selectedDate = date;
+              FrogColor.of(context).color = date.toString();
+            });
+          },
+        ),
+        const SizedBox(height: 16),
+        Text(
+          'Date: $selectedDate',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodyText2,
+        ),
+      ],
+    );
   }
 }
