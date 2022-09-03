@@ -6,24 +6,28 @@ import 'package:date_picker_timeline/date_picker_timeline.dart';
 
 import 'tempFile.dart';
 
-class FrogColor extends InheritedWidget {
-  FrogColor({
+class SelectDate extends InheritedWidget {
+  SelectDate({
     super.key,
-    required this.color,
+    required this.selectDate,
     required super.child,
   });
 
-  String color;
+  DateTime selectDate;
 
-  static FrogColor of(BuildContext context) {
-    final FrogColor? result =
-        context.dependOnInheritedWidgetOfExactType<FrogColor>();
-    assert(result != null, 'No FrogColor found in context');
+  void setSelectDate(DateTime newDate) {
+    selectDate = newDate;
+  }
+
+  static SelectDate of(BuildContext context) {
+    final SelectDate? result =
+        context.dependOnInheritedWidgetOfExactType<SelectDate>();
+    assert(result != null, 'No SelectDate found in context');
     return result!;
   }
 
   @override
-  bool updateShouldNotify(FrogColor old) => color != old.color;
+  bool updateShouldNotify(SelectDate old) => selectDate != old.selectDate;
 }
 
 class TabHomeWidget extends StatefulWidget {
@@ -39,11 +43,11 @@ class _TabHomeWidgetState extends State<TabHomeWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FrogColor(
-            color: "iraaaaa",
+        body: SelectDate(
+            selectDate: DateTime.now(),
             child: Builder(builder: (BuildContext innerContext) {
               return Form(
-                // key: _formKey,
+                key: _formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
@@ -96,7 +100,6 @@ class _TabHomeWidgetState extends State<TabHomeWidget> {
                               height: MediaQuery.of(context).size.height - 140,
                             )),
                         const DatePickerWidget(),
-                        // Text(FrogColor.of(innerContext).color),
                       ],
                     ),
                   ],
@@ -473,7 +476,7 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
           ]),
           onPressed: () {
             _play();
-            print("date = ${FrogColor.of(context).color}");
+            print("date = ${SelectDate.of(context).selectDate}");
           },
         ),
       ),
@@ -493,7 +496,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // final HomePageState state = HomePage.of(context);
+//TODO: Then remove Column widget
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -520,16 +523,16 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
           onDateChange: (date) {
             setState(() {
               selectedDate = date;
-              FrogColor.of(context).color = date.toString();
+              SelectDate.of(context).setSelectDate(date);
             });
           },
         ),
-        const SizedBox(height: 16),
-        Text(
-          'Date: $selectedDate',
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.bodyText2,
-        ),
+        // const SizedBox(height: 16),
+        // Text(
+        //   'Date: $selectedDate',
+        //   textAlign: TextAlign.center,
+        //   style: Theme.of(context).textTheme.bodyText2,
+        // ),
       ],
     );
   }
