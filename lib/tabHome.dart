@@ -401,14 +401,18 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
     animationController.dispose();
   }
 
-  void _play() async {
+  void _playAnimation() async {
+    await animationController.forward().orCancel;
+    await animationController.reverse().orCancel;
+  }
+
+  void _addNewCycle() {
     if (tempLoc.isInit()) {
-      Cycle newCycle = Cycle.withParams(1, 1, DateTime.now());
+      Cycle newCycle =
+          Cycle.withParams(1, 1, SelectDate.of(context).selectDate);
       tempLoc.addNewCycle(newCycle);
     }
 
-    await animationController.forward().orCancel;
-    await animationController.reverse().orCancel;
     //TODO: This is debugging. Then remove.
     tempLoc.getLenArr();
     tempLoc.outputCycles();
@@ -450,35 +454,50 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
         bottom: 0,
         right: 0,
         child: ElevatedButton(
-          style: ButtonStyle(
-            side: MaterialStateProperty.all(
-              const BorderSide(
-                color: Color.fromRGBO(209, 196, 233, 1),
-                width: 7,
+            style: ButtonStyle(
+              side: MaterialStateProperty.all(
+                const BorderSide(
+                  color: Color.fromRGBO(209, 196, 233, 1),
+                  width: 7,
+                ),
               ),
+              shape: MaterialStateProperty.all(CircleBorder()),
+              padding: MaterialStateProperty.all(EdgeInsets.all(30)),
+              backgroundColor:
+                  MaterialStateProperty.all(Colors.deepPurple.shade400),
+              overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
+                if (states.contains(MaterialState.pressed))
+                  return Colors.deepPurple;
+              }),
             ),
-            shape: MaterialStateProperty.all(CircleBorder()),
-            padding: MaterialStateProperty.all(EdgeInsets.all(30)),
-            backgroundColor:
-                MaterialStateProperty.all(Colors.deepPurple.shade400),
-            overlayColor: MaterialStateProperty.resolveWith<Color?>((states) {
-              if (states.contains(MaterialState.pressed))
-                return Colors.deepPurple;
+            child: Column(children: [
+              Icon(Icons.domain_verification, color: Colors.deepPurple.shade50),
+              const Text(
+                "Mark",
+                style: TextStyle(
+                    fontSize: 10, color: Color.fromRGBO(237, 231, 246, 1)),
+              ),
+            ]),
+            onPressed: () {
+              _playAnimation();
+              showDialog<String>(
+                context: context,
+                builder: (BuildContext contextDialog) => AlertDialog(
+                  title: const Text('AlertDialog Title'),
+                  content: const Text('AlertDialog description'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pop(contextDialog, 'OK');
+                        _addNewCycle();
+                        print("date = ${SelectDate.of(context).selectDate}");
+                      },
+                      child: const Text('OK'),
+                    ),
+                  ],
+                ),
+              );
             }),
-          ),
-          child: Column(children: [
-            Icon(Icons.domain_verification, color: Colors.deepPurple.shade50),
-            const Text(
-              "Mark",
-              style: TextStyle(
-                  fontSize: 10, color: Color.fromRGBO(237, 231, 246, 1)),
-            ),
-          ]),
-          onPressed: () {
-            _play();
-            print("date = ${SelectDate.of(context).selectDate}");
-          },
-        ),
       ),
     ]);
   }
@@ -491,6 +510,7 @@ class DatePickerWidget extends StatefulWidget {
   State<DatePickerWidget> createState() => _DatePickerWidgetState();
 }
 
+//TODO: Show the default date on the home screen.
 class _DatePickerWidgetState extends State<DatePickerWidget> {
   DateTime selectedDate = DateTime.now();
 
@@ -501,8 +521,13 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         DatePicker(
-          DateTime.now().subtract(const Duration(days: 30)),
+          DateTime.now().subtract(const Duration(days: 4)),
           initialSelectedDate: DateTime.now(),
+          daysCount: 7,
+          inactiveDates: [
+            DateTime.now().add(Duration(days: 2)),
+            DateTime.now().add(Duration(days: 1)),
+          ],
           monthTextStyle: const TextStyle(
               fontFamily: 'Montserrat',
               color: Color.fromRGBO(209, 196, 233, 1),
@@ -518,6 +543,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
               fontSize: 10),
           selectionColor: Colors.deepPurple.shade100,
           selectedTextColor: Colors.deepPurple,
+          deactivatedColor: Colors.deepPurple.shade200,
           height: 70,
           width: 50,
           onDateChange: (date) {

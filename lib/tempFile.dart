@@ -143,6 +143,14 @@ class TempStorage {
   }
 
   void addNewCycle(Cycle newCycle) {
+    if (_arCycles.isEmpty) {
+      _arCycles.add(newCycle);
+      return;
+    }
+    DateTime dateLast = _arCycles.last.getDateStart();
+    Duration lenLastCycle = newCycle.getDateStart().difference(dateLast);
+    _arCycles.last.setCycleLen(lenLastCycle.inDays);
+    newCycle.setCycleLen(getMidCycleLen());
     _arCycles.add(newCycle);
   }
 
@@ -164,7 +172,8 @@ class TempStorage {
     }
     Cycle lastCycle = _arCycles.last;
 
-    int daysCycle = lastCycle.getCycleLen();
+    int daysCycle = getMidCycleLen();
+    print('period = $daysCycle');
     DateTime lastDate = lastCycle.getDateStart();
     DateTime nextDate = lastDate.add(Duration(days: daysCycle));
     Duration dif = nextDate.difference(DateTime.now());
@@ -178,12 +187,54 @@ class TempStorage {
     }
     Cycle lastCycle = _arCycles.last;
 
-    int daysCycle = lastCycle.getCycleLen();
+    int daysCycle = getMidCycleLen();
     DateTime lastDate = lastCycle.getDateStart();
     DateTime ovulationDate = lastDate.add(Duration(days: daysCycle - 14));
     Duration dif = ovulationDate.difference(DateTime.now());
 
     return Tuple2<bool, int>(true, dif.inDays);
+  }
+
+  int getMidCycleLen() {
+    if (_arCycles.isEmpty) {
+      return 0;
+    }
+    if (1 == _arCycles.length) {
+      return _arCycles[0].getCycleLen();
+    }
+    int lenCycles = 0;
+    for (Cycle cycle in _arCycles) {
+      lenCycles += cycle.getCycleLen();
+    }
+
+    return lenCycles ~/ _arCycles.length;
+  }
+
+  int getMidPeriodLen() {
+    if (_arCycles.isEmpty) {
+      return 0;
+    }
+    if (1 == _arCycles.length) {
+      return _arCycles[0].getPeriodLen();
+    }
+    int lenPeriod = 0;
+    for (Cycle cycle in _arCycles) {
+      lenPeriod += cycle.getPeriodLen();
+    }
+
+    return lenPeriod ~/ _arCycles.length;
+  }
+
+  int getPeriodDay(DateTime dateNow) {
+    for (Cycle cycle in _arCycles) {
+      DateTime startDate = cycle.getDateStart();
+      DateTime endDate = startDate.add(Duration(days: cycle.getPeriodLen()));
+      if (startDate.isBefore(dateNow) || endDate.isAfter(dateNow)) {
+        Duration dif = startDate.difference(dateNow);
+        return dif.inDays;
+      }
+    }
+    return -1;
   }
 }
 
