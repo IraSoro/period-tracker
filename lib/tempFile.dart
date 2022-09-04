@@ -87,6 +87,10 @@ class TempStorage {
     return true;
   }
 
+  List<Cycle> getListCycles(){
+    return _arCycles;
+  }
+
   int getLastCycleLen() {
     if (_arCycles.isEmpty) {
       return listCycle[0];
@@ -150,6 +154,7 @@ class TempStorage {
     DateTime dateLast = _arCycles.last.getDateStart();
     Duration lenLastCycle = newCycle.getDateStart().difference(dateLast);
     _arCycles.last.setCycleLen(lenLastCycle.inDays);
+
     newCycle.setCycleLen(getMidCycleLen());
     _arCycles.add(newCycle);
   }

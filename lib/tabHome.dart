@@ -484,6 +484,7 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
               if (tempLoc.isInit()) {
                 int dropdownPeriod = tempLoc.getMidPeriodLen();
                 //TODO: Change Dialog style
+                //TODO: Add middle lenght of period when select days
                 showDialog<String>(
                   context: context,
                   builder: (BuildContext contextDialog) => SimpleDialog(
