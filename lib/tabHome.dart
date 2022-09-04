@@ -480,52 +480,83 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
               ),
             ]),
             onPressed: () {
-              int dropdownPeriod = tempLoc.getMidPeriodLen();
               _playAnimation();
-              //TODO: Change AlertDialog style
-              showDialog<String>(
-                context: context,
-                builder: (BuildContext contextDialog) => AlertDialog(
-                  title: const Text('Duration of menstruation'),
-                  content: Row(
-                    children: [
-                      const Text('Period length'),
-                      DropdownButton<int>(
-                        value: dropdownPeriod,
-                        elevation: 16,
-                        style: const TextStyle(color: Colors.deepPurple),
-                        underline: Container(
-                          height: 2,
-                          color: Colors.deepPurpleAccent,
-                        ),
-                        onChanged: (int? newValue) {
-                          setState(() {
-                            dropdownPeriod = newValue!;
-                            tempLoc.setStartPeriodLen(dropdownPeriod);
-                          });
+              if (tempLoc.isInit()) {
+                int dropdownPeriod = tempLoc.getMidPeriodLen();
+                //TODO: Change Dialog style
+                showDialog<String>(
+                  context: context,
+                  builder: (BuildContext contextDialog) => SimpleDialog(
+                    title: const Text('Select the length of your period'),
+                    // TODO: Change numbers to list from storage when new cycle adding
+                    children: <Widget>[
+                      SimpleDialogOption(
+                        onPressed: () {
+                          Navigator.pop(contextDialog);
+                          _addNewCycle(1);
                         },
-                        items: tempLoc.listPeriod
-                            .map<DropdownMenuItem<int>>((int value) {
-                          return DropdownMenuItem<int>(
-                            value: value,
-                            child: Text('$value'),
-                          );
-                        }).toList(),
+                        child: const Text('1 Days'),
+                      ),
+                      SimpleDialogOption(
+                        onPressed: () {
+                          Navigator.pop(contextDialog);
+                          _addNewCycle(2);
+                        },
+                        child: const Text('2 Days'),
+                      ),
+                      SimpleDialogOption(
+                        onPressed: () {
+                          Navigator.pop(contextDialog);
+                          _addNewCycle(3);
+                        },
+                        child: const Text('3 Days'),
+                      ),
+                      SimpleDialogOption(
+                        onPressed: () {
+                          Navigator.pop(contextDialog);
+                          _addNewCycle(4);
+                        },
+                        child: const Text('4 Days'),
+                      ),
+                      SimpleDialogOption(
+                        onPressed: () {
+                          Navigator.pop(contextDialog);
+                          _addNewCycle(5);
+                        },
+                        child: const Text('5 Days'),
+                      ),
+                      SimpleDialogOption(
+                        onPressed: () {
+                          Navigator.pop(contextDialog);
+                          _addNewCycle(6);
+                        },
+                        child: const Text('6 Days'),
+                      ),
+                      SimpleDialogOption(
+                        onPressed: () {
+                          Navigator.pop(contextDialog);
+                          _addNewCycle(7);
+                        },
+                        child: const Text('7 Days'),
+                      ),
+                      SimpleDialogOption(
+                        onPressed: () {
+                          Navigator.pop(contextDialog);
+                          _addNewCycle(8);
+                        },
+                        child: const Text('8 Days'),
+                      ),
+                      SimpleDialogOption(
+                        onPressed: () {
+                          Navigator.pop(contextDialog);
+                          _addNewCycle(9);
+                        },
+                        child: const Text('9 Days'),
                       ),
                     ],
                   ),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(contextDialog, 'OK');
-                        _addNewCycle(dropdownPeriod);
-                        print("date = ${SelectDate.of(context).selectDate}");
-                      },
-                      child: const Text('OK'),
-                    ),
-                  ],
-                ),
-              );
+                );
+              }
             }),
       ),
     ]);
