@@ -376,6 +376,7 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
   late Animation animationColor;
   late Animation animationBorderColor;
   late CurvedAnimation curvedAnimation;
+
   @override
   void initState() {
     super.initState();
@@ -406,10 +407,10 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
     await animationController.reverse().orCancel;
   }
 
-  void _addNewCycle() {
+  void _addNewCycle(int lenPeriod) {
     if (tempLoc.isInit()) {
       Cycle newCycle =
-          Cycle.withParams(1, 1, SelectDate.of(context).selectDate);
+          Cycle.withParams(1, lenPeriod, SelectDate.of(context).selectDate);
       tempLoc.addNewCycle(newCycle);
     }
 
@@ -479,17 +480,45 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
               ),
             ]),
             onPressed: () {
+              int dropdownPeriod = tempLoc.getMidPeriodLen();
               _playAnimation();
+              //TODO: Change AlertDialog style
               showDialog<String>(
                 context: context,
                 builder: (BuildContext contextDialog) => AlertDialog(
-                  title: const Text('AlertDialog Title'),
-                  content: const Text('AlertDialog description'),
+                  title: const Text('Duration of menstruation'),
+                  content: Row(
+                    children: [
+                      const Text('Period length'),
+                      DropdownButton<int>(
+                        value: dropdownPeriod,
+                        elevation: 16,
+                        style: const TextStyle(color: Colors.deepPurple),
+                        underline: Container(
+                          height: 2,
+                          color: Colors.deepPurpleAccent,
+                        ),
+                        onChanged: (int? newValue) {
+                          setState(() {
+                            dropdownPeriod = newValue!;
+                            tempLoc.setStartPeriodLen(dropdownPeriod);
+                          });
+                        },
+                        items: tempLoc.listPeriod
+                            .map<DropdownMenuItem<int>>((int value) {
+                          return DropdownMenuItem<int>(
+                            value: value,
+                            child: Text('$value'),
+                          );
+                        }).toList(),
+                      ),
+                    ],
+                  ),
                   actions: <Widget>[
                     TextButton(
                       onPressed: () {
                         Navigator.pop(contextDialog, 'OK');
-                        _addNewCycle();
+                        _addNewCycle(dropdownPeriod);
                         print("date = ${SelectDate.of(context).selectDate}");
                       },
                       child: const Text('OK'),
