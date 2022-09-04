@@ -36,15 +36,32 @@ class MainScreen extends StatelessWidget {
             bottom: const TabBar(
               tabs: [
                 Tab(
-                  text: 'home',
+                  child: Text(
+                    'home',
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                    ),
+                  ),
                 ),
                 Tab(
-                  text: 'history',
+                  child: Text(
+                    'history',
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                    ),
+                  ),
                 ),
-                Tab(text: 'notes'),
+                Tab(
+                  child: Text(
+                    'nodes',
+                    style: TextStyle(
+                      fontFamily: 'Montserrat',
+                    ),
+                  ),
+                ),
               ],
             ),
-            title: const Text('My apps'),
+            // title: const Text('My apps'),
             actions: [
               IconButton(
                 icon: const Icon(Icons.settings),
