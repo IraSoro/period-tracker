@@ -4,7 +4,11 @@ import 'tabHome.dart';
 import 'tabHistory.dart';
 import 'tabNotes.dart';
 
+import 'tempFile.dart';
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  tempLoc.init();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(

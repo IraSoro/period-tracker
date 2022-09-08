@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:tuple/tuple.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
+
 
 class Cycle {
   int _cycleLen = 0;
@@ -80,6 +82,27 @@ class TempStorage {
 
   final _arCycles = List<Cycle>.empty(growable: true);
 
+  var box;
+
+  void init() async {
+    final appDocumentDirectory = await getApplicationDocumentsDirectory();
+    Hive.init(appDocumentDirectory.path);
+
+    box = await Hive.openBox('myBox');
+    // await box.clear();
+    box.put('1', 'David');
+    box.put('3', 'Ira');
+
+    // var name = box.get('name');
+
+    var v = box.values.toList();
+    // var v1 = box.values.length;
+
+    print('Name: $v  len = ${v.length}');
+
+    // print(box.gestAt(0));
+  }
+
   bool isInit() {
     if (_arCycles.isEmpty) {
       return false;
@@ -87,7 +110,7 @@ class TempStorage {
     return true;
   }
 
-  List<Cycle> getListCycles(){
+  List<Cycle> getListCycles() {
     return _arCycles;
   }
 
@@ -243,4 +266,4 @@ class TempStorage {
   }
 }
 
-TempStorage tempLoc = new TempStorage();
+TempStorage tempLoc = TempStorage();
