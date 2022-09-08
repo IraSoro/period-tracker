@@ -2,7 +2,6 @@ import 'package:tuple/tuple.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 
-
 class Cycle {
   int _cycleLen = 0;
   int _periodLen = 0;
@@ -13,40 +12,11 @@ class Cycle {
     _periodLen = newPeriodLen;
     _dateStart = newDateStart;
   }
-
-  int getCycleLen() {
-    return _cycleLen;
-  }
-
-  int getPeriodLen() {
-    return _periodLen;
-  }
-
-  DateTime getDateStart() {
-    return _dateStart;
-  }
-
-  setValues(int newCycleLen, int newPeriodLen, DateTime newDateStart) {
-    _cycleLen = newCycleLen;
-    _periodLen = newPeriodLen;
-    _dateStart = newDateStart;
-  }
-
-  void setCycleLen(int newCycleLen) {
-    _cycleLen = newCycleLen;
-  }
-
-  void setPeriodLen(int newPeriodLen) {
-    _periodLen = newPeriodLen;
-  }
-
-  void setDateStart(DateTime newDateStart) {
-    _dateStart = newDateStart;
-  }
 }
 
 class TempStorage {
-  List<int> listCycle = [
+  //TODO: Change final variable names
+  final List<int> listCycle = [
     14,
     15,
     16,
@@ -78,131 +48,165 @@ class TempStorage {
     42
   ];
 
-  List<int> listPeriod = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+  final List<int> listPeriod = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  final _arCycles = List<Cycle>.empty(growable: true);
-
-  var box;
+  var _box;
+  int _numberRecords = 0;
 
   void init() async {
     final appDocumentDirectory = await getApplicationDocumentsDirectory();
     Hive.init(appDocumentDirectory.path);
 
-    box = await Hive.openBox('myBox');
-    // await box.clear();
-    box.put('1', 'David');
-    box.put('3', 'Ira');
-
-    // var name = box.get('name');
-
-    var v = box.values.toList();
-    // var v1 = box.values.length;
-
-    print('Name: $v  len = ${v.length}');
-
-    // print(box.gestAt(0));
+    _box = await Hive.openBox('myBox');
+    _numberRecords = _box.values.length;
+    // await _box.clear();
   }
 
   bool isInit() {
-    if (_arCycles.isEmpty) {
+    if (0 == _numberRecords) {
       return false;
     }
     return true;
   }
 
-  List<Cycle> getListCycles() {
-    return _arCycles;
+  List getListCycles() {
+    return _box.values.toList();
   }
 
-  int getLastCycleLen() {
-    if (_arCycles.isEmpty) {
+  int getNumberRecords() {
+    return _numberRecords;
+  }
+
+  int getFirstCycleLen() {
+    if (0 == _numberRecords) {
       return listCycle[0];
     }
 
-    return _arCycles[0].getCycleLen();
+    var firstRecords = _box.get(0);
+    int cycleLen = firstRecords['cycleLen'];
+    _box.put(0, firstRecords);
+
+    return cycleLen;
   }
 
-  int getLastPeriodLen() {
-    if (_arCycles.isEmpty) {
-      return 1;
+  int getFirstPeriodLen() {
+    if (0 == _numberRecords) {
+      return listPeriod[0];
     }
-    return _arCycles[0].getPeriodLen();
+
+    var firstRecords = _box.get(0);
+    int periodLen = firstRecords['periodLen'];
+    _box.put(0, firstRecords);
+
+    return periodLen;
   }
 
-  DateTime getLastDateStart() {
-    if (_arCycles.isEmpty) {
+  DateTime getFirstDateStart() {
+    if (0 == _numberRecords) {
       return DateTime.now();
     }
-    return _arCycles[0].getDateStart();
+
+    var firstRecords = _box.get(0);
+    DateTime dateStart = firstRecords['dateStart'];
+    _box.put(0, firstRecords);
+
+    return dateStart;
   }
 
-  void setStartCycleLen(int newCycleLen) {
-    if (_arCycles.isEmpty) {
-      //TODO: change adding to one line ???
-      Cycle newCycle =
-          Cycle.withParams(newCycleLen, listPeriod[0], DateTime.now());
-      _arCycles.add(newCycle);
+  void setStartCycleLen(int newCycleLen) async {
+    if (0 == _numberRecords) {
+      await _box.put(_numberRecords, {
+        'cycleLen': newCycleLen,
+        'periodLen': listPeriod[0],
+        'dateStart': DateTime.now()
+      });
+      _numberRecords++;
     } else {
-      _arCycles[0].setCycleLen(newCycleLen);
+      var firstRecords = await _box.get(0);
+      firstRecords['cycleLen'] = newCycleLen;
+      await _box.put(0, firstRecords);
     }
   }
 
-  void setStartPeriodLen(int newPeriodLen) {
-    if (_arCycles.isEmpty) {
-      //TODO: change adding to one line ???
-      Cycle newCycle =
-          Cycle.withParams(listCycle[0], newPeriodLen, DateTime.now());
-      _arCycles.add(newCycle);
+  void setStartPeriodLen(int newPeriodLen) async {
+    if (0 == _numberRecords) {
+      await _box.put(_numberRecords, {
+        'cycleLen': listCycle[0],
+        'periodLen': newPeriodLen,
+        'dateStart': DateTime.now()
+      });
+      _numberRecords++;
     } else {
-      _arCycles[0].setPeriodLen(newPeriodLen);
+      var firstRecords = await _box.get(0);
+      firstRecords['periodLen'] = newPeriodLen;
+      await _box.put(0, firstRecords);
     }
   }
 
-  void setStartDateLastStart(DateTime newDateStart) {
-    if (_arCycles.isEmpty) {
-      //TODO: change adding to one line
-      Cycle newCycle =
-          Cycle.withParams(listCycle[0], listPeriod[0], newDateStart);
-      _arCycles.add(newCycle);
+  void setStartDateLastStart(DateTime newDateStart) async {
+    if (0 == _numberRecords) {
+      await _box.put(_numberRecords, {
+        'cycleLen': listCycle[0],
+        'periodLen': listPeriod[0],
+        'dateStart': newDateStart
+      });
+      _numberRecords++;
     } else {
-      _arCycles[0].setDateStart(newDateStart);
+      var firstRecords = await _box.get(0);
+      firstRecords['dateStart'] = newDateStart;
+      await _box.put(0, firstRecords);
     }
   }
 
-  void addNewCycle(Cycle newCycle) {
-    if (_arCycles.isEmpty) {
-      _arCycles.add(newCycle);
+  void addNewCycle(Cycle newCycle) async {
+    if (0 == _numberRecords) {
+      await _box.put(_numberRecords, {
+        'cycleLen': newCycle._cycleLen,
+        'periodLen': newCycle._periodLen,
+        'dateStart': newCycle._dateStart
+      });
+      _numberRecords++;
       return;
     }
-    DateTime dateLast = _arCycles.last.getDateStart();
-    Duration lenLastCycle = newCycle.getDateStart().difference(dateLast);
-    _arCycles.last.setCycleLen(lenLastCycle.inDays);
 
-    newCycle.setCycleLen(getMidCycleLen());
-    _arCycles.add(newCycle);
+    var lastRecords = await _box.get(_numberRecords - 1);
+    DateTime bdateLast = lastRecords['dateStart'];
+    Duration blenLastCycle = newCycle._dateStart.difference(bdateLast);
+
+    lastRecords['cycleLen'] = blenLastCycle.inDays;
+    await _box.put(_numberRecords - 1, lastRecords);
+
+    await _box.put(_numberRecords, {
+      'cycleLen': getMidCycleLen(),
+      'periodLen': newCycle._periodLen,
+      'dateStart': newCycle._dateStart
+    });
+    _numberRecords++;
+    outputCycles();
   }
 
 //TODO: This functions is for debugging. Then remove.
   void getLenArr() {
-    print('len = ${_arCycles.length}');
+    print('number = $_numberRecords');
   }
 
   void outputCycles() {
-    for (int i = 0; i <= _arCycles.length - 1; i++) {
-      print(
-          "$i) lenCycle = ${_arCycles[i].getCycleLen()}  lenPeriod = ${_arCycles[i].getPeriodLen()}  data = ${_arCycles[i].getDateStart().toString()}\n");
-    }
+    print('numberC = $_numberRecords');
+    var v = _box.values.toList();
+    print('DB: $v ');
   }
 
   Tuple2<bool, int> getMenstruation() {
-    if (_arCycles.isEmpty) {
+    if (0 == _numberRecords) {
       return const Tuple2<bool, int>(false, 0);
     }
-    Cycle lastCycle = _arCycles.last;
 
     int daysCycle = getMidCycleLen();
-    print('period = $daysCycle');
-    DateTime lastDate = lastCycle.getDateStart();
+    var lastRecords = _box.get(_numberRecords - 1);
+
+    DateTime lastDate = lastRecords["dateStart"];
+    _box.put(_numberRecords - 1, lastRecords);
+
     DateTime nextDate = lastDate.add(Duration(days: daysCycle));
     Duration dif = nextDate.difference(DateTime.now());
 
@@ -210,13 +214,15 @@ class TempStorage {
   }
 
   Tuple2<bool, int> getOvulation() {
-    if (_arCycles.isEmpty) {
+    if (0 == _numberRecords) {
       return const Tuple2<bool, int>(false, 0);
     }
-    Cycle lastCycle = _arCycles.last;
-
     int daysCycle = getMidCycleLen();
-    DateTime lastDate = lastCycle.getDateStart();
+    var lastRecords = _box.get(_numberRecords - 1);
+
+    DateTime lastDate = lastRecords["dateStart"];
+    _box.put(_numberRecords - 1, lastRecords);
+
     DateTime ovulationDate = lastDate.add(Duration(days: daysCycle - 14));
     Duration dif = ovulationDate.difference(DateTime.now());
 
@@ -224,45 +230,45 @@ class TempStorage {
   }
 
   int getMidCycleLen() {
-    if (_arCycles.isEmpty) {
+    if (0 == _numberRecords) {
       return 0;
     }
-    if (1 == _arCycles.length) {
-      return _arCycles[0].getCycleLen();
+    if (1 == _numberRecords) {
+      var firstRecords = _box.get(0);
+      int cycleLen = firstRecords['cycleLen'];
+      _box.put(0, firstRecords);
+      return cycleLen;
     }
-    int lenCycles = 0;
-    for (Cycle cycle in _arCycles) {
-      lenCycles += cycle.getCycleLen();
+    var arCycles = _box.values.toList();
+    num lenCycles = 0;
+
+    for (int i = 0; i < _numberRecords; ++i) {
+      var firstRecords = arCycles[i];
+      lenCycles += firstRecords['cycleLen'].toInt();
     }
 
-    return lenCycles ~/ _arCycles.length;
+    return lenCycles ~/ _numberRecords;
   }
 
   int getMidPeriodLen() {
-    if (_arCycles.isEmpty) {
+    if (0 == _numberRecords) {
       return 0;
     }
-    if (1 == _arCycles.length) {
-      return _arCycles[0].getPeriodLen();
+    if (1 == _numberRecords) {
+      var firstRecords = _box.get(0);
+      int cycleLen = firstRecords['periodLen'];
+      _box.put(0, firstRecords);
+      return cycleLen;
     }
-    int lenPeriod = 0;
-    for (Cycle cycle in _arCycles) {
-      lenPeriod += cycle.getPeriodLen();
+    var arCycles = _box.values.toList();
+    num lenPeriod = 0;
+
+    for (int i = 0; i < _numberRecords; ++i) {
+      var firstRecords = arCycles[i];
+      lenPeriod += firstRecords['periodLen'].toInt();
     }
 
-    return lenPeriod ~/ _arCycles.length;
-  }
-
-  int getPeriodDay(DateTime dateNow) {
-    for (Cycle cycle in _arCycles) {
-      DateTime startDate = cycle.getDateStart();
-      DateTime endDate = startDate.add(Duration(days: cycle.getPeriodLen()));
-      if (startDate.isBefore(dateNow) || endDate.isAfter(dateNow)) {
-        Duration dif = startDate.difference(dateNow);
-        return dif.inDays;
-      }
-    }
-    return -1;
+    return lenPeriod ~/ _numberRecords;
   }
 }
 

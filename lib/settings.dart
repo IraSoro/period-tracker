@@ -31,7 +31,7 @@ class _InputWidgetState extends State<InputWidget> {
                   child: Text('Cycle length', textDirection: TextDirection.ltr),
                 ),
               ),
-              CycleDropdownWidget(dropdownCycle: tempLoc.getLastCycleLen()),
+              CycleDropdownWidget(dropdownCycle: tempLoc.getFirstCycleLen()),
             ],
           ),
           Row(
@@ -45,7 +45,7 @@ class _InputWidgetState extends State<InputWidget> {
                       Text('Period length', textDirection: TextDirection.ltr),
                 ),
               ),
-              PeriodDropdownWidget(dropdownPeriod: tempLoc.getLastPeriodLen()),
+              PeriodDropdownWidget(dropdownPeriod: tempLoc.getFirstPeriodLen()),
             ],
           ),
           Row(
@@ -54,7 +54,8 @@ class _InputWidgetState extends State<InputWidget> {
                   child: Padding(
                 padding: const EdgeInsets.only(
                     top: 10.0, bottom: 0.0, left: 20.0, right: 20.0),
-                child: DateTimeWidget(selectedDate: tempLoc.getLastDateStart()),
+                child:
+                    DateTimeWidget(selectedDate: tempLoc.getFirstDateStart()),
               ))
             ],
           ),

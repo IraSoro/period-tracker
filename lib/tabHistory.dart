@@ -13,7 +13,8 @@ class TabHistoryWidget extends StatefulWidget {
 class _TabHistoryWidgetState extends State<TabHistoryWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final List<Cycle> list = tempLoc.getListCycles();
+  final List listCycles = tempLoc.getListCycles();
+  int countCycles = tempLoc.getNumberRecords();
 
   @override
   Widget build(BuildContext context) {
@@ -122,12 +123,12 @@ class _TabHistoryWidgetState extends State<TabHistoryWidget> {
             height: 400,
             child: ListView.separated(
               padding: const EdgeInsets.all(8),
-              itemCount: list.length,
+              itemCount: countCycles,
               itemBuilder: (BuildContext context, int index) {
-                Cycle cycle = list[list.length - 1 - index];
-                DateTime startDate = cycle.getDateStart();
+                var record = listCycles[countCycles - 1 - index];
+                DateTime startDate = record['dateStart'];
                 DateTime endDate =
-                    startDate.add(Duration(days: cycle.getCycleLen()));
+                    startDate.add(Duration(days: record['cycleLen']));
 
                 return Container(
                   height: 50,
