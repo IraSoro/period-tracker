@@ -4,11 +4,11 @@ import 'tabHome.dart';
 import 'tabHistory.dart';
 import 'tabNotes.dart';
 
-import 'tempFile.dart';
+import 'storage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  tempLoc.init();
+  storage.init();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     theme: ThemeData(
@@ -21,14 +21,20 @@ void main() {
     ),
     initialRoute: '/',
     routes: {
-      '/': (BuildContext context) => const MainScreen(),
+      '/': (BuildContext context) => MainScreen(),
       '/settings': (BuildContext context) => const SettingsScreen()
     },
   ));
 }
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({Key? key}) : super(key: key);
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +76,9 @@ class MainScreen extends StatelessWidget {
               IconButton(
                 icon: const Icon(Icons.settings),
                 onPressed: () {
-                  Navigator.popAndPushNamed(context, '/settings');
+                  if (0 == storage.getNumberRecords()) {
+                    Navigator.popAndPushNamed(context, '/settings');
+                  }
                 },
               )
             ],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'tempFile.dart';
+import 'storage.dart';
 
 class TabHistoryWidget extends StatefulWidget {
   const TabHistoryWidget({Key? key}) : super(key: key);
@@ -13,8 +13,8 @@ class TabHistoryWidget extends StatefulWidget {
 class _TabHistoryWidgetState extends State<TabHistoryWidget> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final List listCycles = tempLoc.getListCycles();
-  int countCycles = tempLoc.getNumberRecords();
+  final List listCycles = storage.getListCycles();
+  int countCycles = storage.getNumberRecords();
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +61,7 @@ class _TabHistoryWidgetState extends State<TabHistoryWidget> {
                       Expanded(
                         flex: 1,
                         child: Text(
-                          '${tempLoc.getMidCycleLen()} DAYS',
+                          '${storage.getMidCycleLen()} DAYS',
                           textAlign: TextAlign.right,
                           style: const TextStyle(
                             fontSize: 20,
@@ -92,7 +92,7 @@ class _TabHistoryWidgetState extends State<TabHistoryWidget> {
                       Expanded(
                         flex: 1,
                         child: Text(
-                          '${tempLoc.getMidPeriodLen()} DAYS',
+                          '${storage.getMidPeriodLen()} DAYS',
                           textAlign: TextAlign.right,
                           style: const TextStyle(
                             fontSize: 20,

@@ -58,8 +58,8 @@ class TempStorage {
     Hive.init(appDocumentDirectory.path);
 
     _box = await Hive.openBox('myBox');
+    await _box.clear();
     _numberRecords = _box.values.length;
-    // await _box.clear();
   }
 
   bool isInit() {
@@ -272,4 +272,4 @@ class TempStorage {
   }
 }
 
-TempStorage tempLoc = TempStorage();
+TempStorage storage = TempStorage();

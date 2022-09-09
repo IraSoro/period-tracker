@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application/tempFile.dart';
+import 'package:flutter_application/main.dart';
+import 'package:flutter_application/storage.dart';
 
 import 'package:tuple/tuple.dart';
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 
-import 'tempFile.dart';
+import 'storage.dart';
 
 class SelectDate extends InheritedWidget {
   SelectDate({
@@ -186,23 +187,20 @@ class _ButtonOvulationWidgetState extends State<ButtonOvulationWidget> {
           selected = !selected;
         });
       },
-      child: Container(
-        child: Center(
-          // alignment: Alignment.center,
-          child: AnimatedContainer(
-            decoration: BoxDecoration(
-              color: selected ? Colors.deepPurple : Colors.deepPurple.shade400,
-              border: Border.all(
-                  width: selected ? 0 : 10, color: Colors.deepPurple.shade100),
-              borderRadius: BorderRadius.circular(120),
-            ),
-            width: 220.0,
-            height: 220.0,
-            alignment: Alignment.center,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.easeInOutBack,
-            child: InfOvulationWidget(),
+      child: Center(
+        child: AnimatedContainer(
+          decoration: BoxDecoration(
+            color: selected ? Colors.deepPurple : Colors.deepPurple.shade400,
+            border: Border.all(
+                width: selected ? 0 : 10, color: Colors.deepPurple.shade100),
+            borderRadius: BorderRadius.circular(120),
           ),
+          width: 220.0,
+          height: 220.0,
+          alignment: Alignment.center,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOutBack,
+          child: InfOvulationWidget(),
         ),
       ),
     );
@@ -217,7 +215,7 @@ class InfPeriodWidget extends StatefulWidget {
 }
 
 class _InfPeriodWidgetState extends State<InfPeriodWidget> {
-  Tuple2<bool, int> infPeriod = tempLoc.getMenstruation();
+  Tuple2<bool, int> infPeriod = storage.getMenstruation();
   @override
   Widget build(BuildContext context) {
     if (!infPeriod.item1) {
@@ -309,7 +307,7 @@ class InfOvulationWidget extends StatefulWidget {
 }
 
 class _InfOvulationWidgetState extends State<InfOvulationWidget> {
-  Tuple2<bool, int> infOvulation = tempLoc.getOvulation();
+  Tuple2<bool, int> infOvulation = storage.getOvulation();
   @override
   Widget build(BuildContext context) {
     if (!infOvulation.item1) {
@@ -408,19 +406,19 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
   }
 
   void _addNewCycle(int lenPeriod) {
-    if (tempLoc.isInit()) {
+    if (storage.isInit()) {
       Cycle newCycle =
           Cycle.withParams(1, lenPeriod, SelectDate.of(context).selectDate);
-      tempLoc.addNewCycle(newCycle);
+      storage.addNewCycle(newCycle);
     }
 
     //TODO: This is debugging. Then remove.
-    tempLoc.getLenArr();
-    tempLoc.outputCycles();
+    // storage.getLenArr();
+    // storage.outputCycles();
   }
 
   Widget _output() {
-    if (!tempLoc.getMenstruation().item1) {
+    if (!storage.getMenstruation().item1) {
       return Column(
         children: const [
           InfPeriodWidget(),
@@ -481,8 +479,7 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
             ]),
             onPressed: () {
               _playAnimation();
-              if (tempLoc.isInit()) {
-                int dropdownPeriod = tempLoc.getMidPeriodLen();
+              if (storage.isInit()) {
                 //TODO: Change Dialog style
                 //TODO: Add middle lenght of period when select days
                 showDialog<String>(
@@ -493,64 +490,64 @@ class _ButtonPeriodWidgetState extends State<ButtonPeriodWidget>
                     children: <Widget>[
                       SimpleDialogOption(
                         onPressed: () {
+                          _addNewCycle(storage.listPeriod[0]);
                           Navigator.pop(contextDialog);
-                          _addNewCycle(1);
                         },
                         child: const Text('1 Days'),
                       ),
                       SimpleDialogOption(
                         onPressed: () {
+                          _addNewCycle(storage.listPeriod[1]);
                           Navigator.pop(contextDialog);
-                          _addNewCycle(2);
                         },
                         child: const Text('2 Days'),
                       ),
                       SimpleDialogOption(
                         onPressed: () {
+                          _addNewCycle(storage.listPeriod[2]);
                           Navigator.pop(contextDialog);
-                          _addNewCycle(3);
                         },
                         child: const Text('3 Days'),
                       ),
                       SimpleDialogOption(
                         onPressed: () {
+                          _addNewCycle(storage.listPeriod[3]);
                           Navigator.pop(contextDialog);
-                          _addNewCycle(4);
                         },
                         child: const Text('4 Days'),
                       ),
                       SimpleDialogOption(
                         onPressed: () {
+                          _addNewCycle(storage.listPeriod[4]);
                           Navigator.pop(contextDialog);
-                          _addNewCycle(5);
                         },
                         child: const Text('5 Days'),
                       ),
                       SimpleDialogOption(
                         onPressed: () {
+                          _addNewCycle(storage.listPeriod[5]);
                           Navigator.pop(contextDialog);
-                          _addNewCycle(6);
                         },
                         child: const Text('6 Days'),
                       ),
                       SimpleDialogOption(
                         onPressed: () {
+                          _addNewCycle(storage.listPeriod[6]);
                           Navigator.pop(contextDialog);
-                          _addNewCycle(7);
                         },
                         child: const Text('7 Days'),
                       ),
                       SimpleDialogOption(
                         onPressed: () {
+                          _addNewCycle(storage.listPeriod[7]);
                           Navigator.pop(contextDialog);
-                          _addNewCycle(8);
                         },
                         child: const Text('8 Days'),
                       ),
                       SimpleDialogOption(
                         onPressed: () {
+                          _addNewCycle(storage.listPeriod[8]);
                           Navigator.pop(contextDialog);
-                          _addNewCycle(9);
                         },
                         child: const Text('9 Days'),
                       ),
@@ -586,8 +583,8 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
           initialSelectedDate: DateTime.now(),
           daysCount: 7,
           inactiveDates: [
-            DateTime.now().add(Duration(days: 2)),
-            DateTime.now().add(Duration(days: 1)),
+            DateTime.now().add(const Duration(days: 2)),
+            DateTime.now().add(const Duration(days: 1)),
           ],
           monthTextStyle: const TextStyle(
               fontFamily: 'Montserrat',
@@ -614,12 +611,6 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
             });
           },
         ),
-        // const SizedBox(height: 16),
-        // Text(
-        //   'Date: $selectedDate',
-        //   textAlign: TextAlign.center,
-        //   style: Theme.of(context).textTheme.bodyText2,
-        // ),
       ],
     );
   }

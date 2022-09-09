@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
 
-import 'tempFile.dart';
+import 'storage.dart';
 
 class InputWidget extends StatefulWidget {
   const InputWidget({Key? key}) : super(key: key);
@@ -31,7 +31,7 @@ class _InputWidgetState extends State<InputWidget> {
                   child: Text('Cycle length', textDirection: TextDirection.ltr),
                 ),
               ),
-              CycleDropdownWidget(dropdownCycle: tempLoc.getFirstCycleLen()),
+              CycleDropdownWidget(dropdownCycle: storage.getFirstCycleLen()),
             ],
           ),
           Row(
@@ -45,7 +45,7 @@ class _InputWidgetState extends State<InputWidget> {
                       Text('Period length', textDirection: TextDirection.ltr),
                 ),
               ),
-              PeriodDropdownWidget(dropdownPeriod: tempLoc.getFirstPeriodLen()),
+              PeriodDropdownWidget(dropdownPeriod: storage.getFirstPeriodLen()),
             ],
           ),
           Row(
@@ -55,7 +55,7 @@ class _InputWidgetState extends State<InputWidget> {
                 padding: const EdgeInsets.only(
                     top: 10.0, bottom: 0.0, left: 20.0, right: 20.0),
                 child:
-                    DateTimeWidget(selectedDate: tempLoc.getFirstDateStart()),
+                    DateTimeWidget(selectedDate: storage.getFirstDateStart()),
               ))
             ],
           ),
@@ -66,9 +66,9 @@ class _InputWidgetState extends State<InputWidget> {
                     top: 10, bottom: 0, left: 20, right: 20),
                 child: ElevatedButton(
                   onPressed: () {
-                    if (tempLoc.isInit()) {
-                      tempLoc.getLenArr();
-                      tempLoc.outputCycles();
+                    if (storage.isInit()) {
+                      storage.getLenArr();
+                      storage.outputCycles();
                       Navigator.popAndPushNamed(context, '/');
                     }
                   },
@@ -84,7 +84,7 @@ class _InputWidgetState extends State<InputWidget> {
 }
 
 class CycleDropdownWidget extends StatefulWidget {
-  int dropdownCycle = tempLoc.listCycle[0];
+  int dropdownCycle = storage.listCycle[0];
 
   CycleDropdownWidget({Key? key, required this.dropdownCycle})
       : super(key: key);
@@ -95,7 +95,7 @@ class CycleDropdownWidget extends StatefulWidget {
 }
 
 class _CycleDropdownWidgetState extends State<CycleDropdownWidget> {
-  int dropdownCycle = tempLoc.listCycle[0];
+  int dropdownCycle = storage.listCycle[0];
 
   _CycleDropdownWidgetState(this.dropdownCycle);
 
@@ -112,10 +112,10 @@ class _CycleDropdownWidgetState extends State<CycleDropdownWidget> {
       onChanged: (int? newValue) {
         setState(() {
           dropdownCycle = newValue!;
-          tempLoc.setStartCycleLen(dropdownCycle);
+          storage.setStartCycleLen(dropdownCycle);
         });
       },
-      items: tempLoc.listCycle.map<DropdownMenuItem<int>>((int value) {
+      items: storage.listCycle.map<DropdownMenuItem<int>>((int value) {
         return DropdownMenuItem<int>(
           value: value,
           child: Text('$value'),
@@ -126,7 +126,7 @@ class _CycleDropdownWidgetState extends State<CycleDropdownWidget> {
 }
 
 class PeriodDropdownWidget extends StatefulWidget {
-  int dropdownPeriod = tempLoc.listPeriod[0];
+  int dropdownPeriod = storage.listPeriod[0];
 
   PeriodDropdownWidget({Key? key, required this.dropdownPeriod})
       : super(key: key);
@@ -137,7 +137,7 @@ class PeriodDropdownWidget extends StatefulWidget {
 }
 
 class _PeriodDropdownWidgetState extends State<PeriodDropdownWidget> {
-  int dropdownPeriod = tempLoc.listPeriod[0];
+  int dropdownPeriod = storage.listPeriod[0];
 
   _PeriodDropdownWidgetState(this.dropdownPeriod);
 
@@ -154,10 +154,10 @@ class _PeriodDropdownWidgetState extends State<PeriodDropdownWidget> {
       onChanged: (int? newValue) {
         setState(() {
           dropdownPeriod = newValue!;
-          tempLoc.setStartPeriodLen(dropdownPeriod);
+          storage.setStartPeriodLen(dropdownPeriod);
         });
       },
-      items: tempLoc.listPeriod.map<DropdownMenuItem<int>>((int value) {
+      items: storage.listPeriod.map<DropdownMenuItem<int>>((int value) {
         return DropdownMenuItem<int>(
           value: value,
           child: Text('$value'),
@@ -196,7 +196,7 @@ class _DateTimeWidgetState extends State<DateTimeWidget> {
       onDateSelected: (DateTime newDate) {
         setState(() {
           selectedDate = newDate;
-          tempLoc.setStartDateLastStart(selectedDate);
+          storage.setStartDateLastStart(selectedDate);
         });
       },
     );
