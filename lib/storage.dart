@@ -58,6 +58,7 @@ class TempStorage {
     Hive.init(appDocumentDirectory.path);
 
     _box = await Hive.openBox('myBox');
+    //TODO: Then delete the line
     await _box.clear();
     _numberRecords = _box.values.length;
   }
