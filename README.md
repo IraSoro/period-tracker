@@ -1,16 +1,12 @@
-# flutter_application
+# PERIOD TRACKER
 
-A new Flutter project.
+This project is develop on Flutter.
 
-## Getting Started
+## Description
 
-This project is a starting point for a Flutter application.
+Period Tracker is easy-to-use application that helps women keep track of periods, cycle, ovulation, and fertile days.
 
-A few resources to get you started if this is your first Flutter project:
+MVP is ready at the moment.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Database
+https://pub.dev/packages/hive
